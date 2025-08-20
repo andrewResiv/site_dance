@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimum-scale=1.0">
     <title>Студия танца Алины Бабаевой</title>
     
     <!-- Подключение Tailwind CSS -->
@@ -14,15 +14,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* Применение кастомных шрифтов */
+        /* Базовые стили */
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #101010;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-font-smoothing: antialiased;
         }
+        
         h1, h2, h3, h4, .font-display {
             font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
         }
-        /* Эффект градиентного текста для акцентов */
+        
+        /* Оптимизация для 60 Гц устройств */
+        @media (max-resolution: 60dpi), (max-width: 768px) {
+            .no-animation {
+                transform: none !important;
+                transition: none !important;
+                animation: none !important;
+            }
+            
+            .simplified-effects {
+                backdrop-filter: none !important;
+                filter: none !important;
+                perspective: none !important;
+            }
+        }
+        
+        /* Градиентный текст */
         .gradient-text {
             background: linear-gradient(90deg, #be38f5, #ff3b8d);
             -webkit-background-clip: text;
@@ -30,12 +53,20 @@
             background-clip: text;
             text-fill-color: transparent;
         }
-        /* Стиль для "стеклянных" карточек */
+        
+        /* Стеклянные карточки с fallback */
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        
+        @supports (backdrop-filter: blur(10px)) {
+            .glass-card {
+                backdrop-filter: blur(10px);
+                background: rgba(255, 255, 255, 0.03);
+            }
+        }
+        
         /* Адаптивные размеры текста */
         @media (max-width: 768px) {
             h1 {
@@ -48,13 +79,90 @@
             .text-lg, p {
                 font-size: 1rem !important;
             }
+            
+            /* Упрощаем анимации на мобильных */
+            .hover\:scale-105:hover {
+                transform: none !important;
+            }
+            
+            #hero {
+                background-attachment: scroll !important;
+            }
+        }
+        
+        /* Оптимизация мобильного меню */
+        #mobile-menu {
+            display: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        #mobile-menu.active {
+            display: block;
+            opacity: 1;
+        }
+        
+        /* Оптимизация изображений */
+        img {
+            max-width: 100%;
+            height: auto;
+            vertical-align: middle;
+            border-style: none;
+        }
+        
+        /* Отключаем сложные эффекты для слабых устройств */
+        .low-performance * {
+            transform: none !important;
+            transition: none !important;
+            animation: none !important;
+            backdrop-filter: none !important;
         }
     </style>
 </head>
 <body class="bg-[#101010] text-gray-200">
+    <!-- Скрипт для детекции производительности -->
+    <script>
+        // Проверяем производительность устройства
+        function checkPerformance() {
+            const isLowPerformance = 
+                window.matchMedia('(max-resolution: 60dpi)').matches || 
+                /iPhone|iPad|iPod/i.test(navigator.userAgent) && !window.matchMedia('(min-resolution: 120dpi)').matches;
+            
+            if (isLowPerformance) {
+                document.documentElement.classList.add('low-performance');
+                document.documentElement.classList.add('no-animation');
+                document.documentElement.classList.add('simplified-effects');
+            }
+            
+            // Оптимизация скролла
+            const smoothLinks = document.querySelectorAll('a[href^="#"]');
+            for (let smoothLink of smoothLinks) {
+                smoothLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (isLowPerformance || window.innerWidth < 768) {
+                        targetElement.scrollIntoView({ behavior: 'auto' });
+                    } else {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    
+                    // Закрываем мобильное меню если открыто
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                        document.getElementById('menu-toggle').classList.remove('active');
+                    }
+                });
+            }
+        }
+        
+        // Запускаем при загрузке
+        document.addEventListener('DOMContentLoaded', checkPerformance);
+    </script>
 
     <!-- НАВИГАЦИЯ -->
-    <header class="bg-[#101010]/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50">
+    <header class="bg-[#101010]/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 simplified-effects">
         <div class="container mx-auto px-4 py-3 md:px-6 md:py-4 flex justify-between items-center">
             <a href="#" class="text-lg md:text-xl font-bold font-display tracking-wider gradient-text">
                 АЛИНА БАБАЕВА
@@ -62,13 +170,13 @@
             
             <!-- Десктопное меню -->
             <nav class="hidden md:flex space-x-4 md:space-x-6 text-xs md:text-sm tracking-widest">
-                <a href="#about" class="hover:text-[#ff3b8d] transition-colors">ОБО МНЕ</a>
-                <a href="#services" class="hover:text-[#ff3b8d] transition-colors">ЗАНЯТИЯ</a>
-                <a href="#schedule" class="hover:text-[#ff3b8d] transition-colors">РАСПИСАНИЕ</a>
-                <a href="#gallery" class="hover:text-[#ff3b8d] transition-colors">ГАЛЕРЕЯ</a>
-                <a href="#videos" class="hover:text-[#ff3b8d] transition-colors">ВИДЕО</a>
-                <a href="#reviews" class="hover:text-[#ff3b8d] transition-colors">ОТЗЫВЫ</a>
-                <a href="#contact" class="hover:text-[#ff3b8d] transition-colors">КОНТАКТЫ</a>
+                <a href="#about" class="hover:text-[#ff3b8d] transition-colors duration-200">ОБО МНЕ</a>
+                <a href="#services" class="hover:text-[#ff3b8d] transition-colors duration-200">ЗАНЯТИЯ</a>
+                <a href="#schedule" class="hover:text-[#ff3b8d] transition-colors duration-200">РАСПИСАНИЕ</a>
+                <a href="#gallery" class="hover:text-[#ff3b8d] transition-colors duration-200">ГАЛЕРЕЯ</a>
+                <a href="#videos" class="hover:text-[#ff3b8d] transition-colors duration-200">ВИДЕО</a>
+                <a href="#reviews" class="hover:text-[#ff3b8d] transition-colors duration-200">ОТЗЫВЫ</a>
+                <a href="#contact" class="hover:text-[#ff3b8d] transition-colors duration-200">КОНТАКТЫ</a>
             </nav>
             
             <!-- Мобильное меню -->
@@ -78,22 +186,24 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                     </svg>
                 </button>
-                <div id="mobile-menu" class="hidden absolute top-16 left-0 right-0 bg-[#101010] py-3 px-4 space-y-3 text-sm">
-                    <a href="#about" class="block py-2 hover:text-[#ff3b8d]">ОБО МНЕ</a>
-                    <a href="#services" class="block py-2 hover:text-[#ff3b8d]">ЗАНЯТИЯ</a>
-                    <a href="#schedule" class="block py-2 hover:text-[#ff3b8d]">РАСПИСАНИЕ</a>
-                    <a href="#gallery" class="block py-2 hover:text-[#ff3b8d]">ГАЛЕРЕЯ</a>
-                    <a href="#videos" class="block py-2 hover:text-[#ff3b8d]">ВИДЕО</a>
-                    <a href="#reviews" class="block py-2 hover:text-[#ff3b8d]">ОТЗЫВЫ</a>
-                    <a href="#contact" class="block py-2 hover:text-[#ff3b8d]">КОНТАКТЫ</a>
-                </div>
             </div>
+        </div>
+
+        <!-- Мобильное меню (отдельно для лучшей производительности) -->
+        <div id="mobile-menu" class="md:hidden absolute top-16 left-0 right-0 bg-[#101010] py-3 px-4 space-y-3 text-sm">
+            <a href="#about" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ОБО МНЕ</a>
+            <a href="#services" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ЗАНЯТИЯ</a>
+            <a href="#schedule" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">РАСПИСАНИЕ</a>
+            <a href="#gallery" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ГАЛЕРЕЯ</a>
+            <a href="#videos" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ВИДЕО</a>
+            <a href="#reviews" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ОТЗЫВЫ</a>
+            <a href="#contact" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">КОНТАКТЫ</a>
         </div>
     </header>
 
     <main>
-        <!-- СЕКЦИЯ 1: ГЛАВНЫЙ ЭКРАН -->
-        <section id="hero" class="h-screen flex items-center justify-center text-center bg-cover bg-center pt-20" style="background-image: url('IMG_2945.png');">
+        <!-- СЕКЦИЯ 1: ГЛАВНЫЙ ЭКРАН (оптимизированная) -->
+        <section id="hero" class="h-screen flex items-center justify-center text-center bg-cover bg-center pt-20 no-animation" style="background-image: url('IMG_2945.png'); background-attachment: fixed;">
             <div class="bg-[#101010]/60 absolute inset-0"></div>
             <div class="relative z-10 px-4 w-full">
                 <h1 class="text-4xl md:text-8xl font-black uppercase text-white tracking-tight md:tracking-widest leading-tight">
@@ -102,7 +212,7 @@
                 <p class="mt-4 px-4 text-base md:text-xl text-gray-300">
                     Уроки стрип-пластики с Алиной Бабаевой. Раскрой свою чувственность и уверенность через движение.
                 </p>
-                <a href="#contact" class="mt-8 inline-block bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold text-sm md:text-lg uppercase px-8 py-3 md:px-12 md:py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                <a href="#contact" class="mt-8 inline-block bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold text-sm md:text-lg uppercase px-8 py-3 md:px-12 md:py-4 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 no-animation">
                     Записаться
                 </a>
             </div>
@@ -316,20 +426,85 @@
     </main>
 
     <!-- ПОДВАЛ -->
-    <footer class="bg-black py-6 md:py-8">
+    <footer class="bg-black py-6 md:py-8 no-animation">
         <div class="container mx-auto px-4 md:px-6 text-center text-gray-500 text-sm md:text-base">
-            <p>&copy; 2024 Алина Бабаева. Все права защищены.</p>
+            <p>&copy; <script>document.write(new Date().getFullYear())</script> Алина Бабаева. Все права защищены.</p>
             <p class="text-sm mt-2">Сайт с любовью сделан Андреевым Андреем</p>
         </div>
     </footer>
-<script>
-  const menuToggle = document.getElementById('menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
 
-  menuToggle.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-  });
-</script>
-
+    <!-- Скрипт для мобильного меню с оптимизацией -->
+    <script>
+        // Оптимизированный обработчик меню
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menu-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            // Делаем обработчик максимально легким
+            function toggleMenu() {
+                if (mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                } else {
+                    mobileMenu.classList.add('active');
+                    menuToggle.classList.add('active');
+                }
+            }
+            
+            // Дебаунс для избежания множественных срабатываний
+            let lastTapTime = 0;
+            menuToggle.addEventListener('click', function(e) {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTapTime;
+                if (tapLength < 300 && tapLength > 0) {
+                    e.preventDefault();
+                } else {
+                    toggleMenu();
+                }
+                lastTapTime = currentTime;
+            });
+            
+            // Закрытие меню при клике снаружи
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('#mobile-menu') && !e.target.closest('#menu-toggle') && mobileMenu.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+        });
+        
+        // Оптимизация загрузки изображений
+        function lazyLoadImages() {
+            const images = document.querySelectorAll('img[data-src]');
+            const config = {
+                rootMargin: '50px 0px',
+                threshold: 0.01
+            };
+            
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(function(entries, self) {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            self.unobserve(img);
+                        }
+                    });
+                }, config);
+                
+                images.forEach(img => {
+                    observer.observe(img);
+                });
+            } else {
+                // Fallback для старых браузеров
+                images.forEach(img => {
+                    img.src = img.dataset.src;
+                });
+            }
+        }
+        
+        // Запускаем после полной загрузки страницы
+        window.addEventListener('load', lazyLoadImages);
+    </script>
 </body>
 </html>
