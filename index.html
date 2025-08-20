@@ -3,7 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimum-scale=1.0">
-    <title>Студия танца Алины Бабаевой</title>
+    <title>Студия танца Алины Бабаевой | Стрип-пластика в Москве</title>
+    <meta name="description" content="Профессиональные уроки стрип-пластики с Алиной Бабаевой. Раскрой свою чувственность, уверенность и грацию через танец. Групповые и индивидуальные занятия.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alina-babaeva.ru/">
+    <meta property="og:title" content="Студия танца Алины Бабаевой | Стрип-пластика">
+    <meta property="og:description" content="Профессиональные уроки стрип-пластики. Раскрой свою чувственность и уверенность через танец.">
+    <meta property="og:image" content="https://alina-babaeva.ru/preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://alina-babaeva.ru/">
+    <meta property="twitter:title" content="Студия танца Алины Бабаевой | Стрип-пластика">
+    <meta property="twitter:description" content="Профессиональные уроки стрип-пластики. Раскрой свою чувственность и уверенность через танец.">
+    <meta property="twitter:image" content="https://alina-babaeva.ru/preview.jpg">
     
     <!-- Подключение Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,6 +27,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Иконка сайта -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💃</text></svg>">
     
     <style>
         /* Базовые стили */
@@ -84,10 +102,6 @@
             .hover\:scale-105:hover {
                 transform: none !important;
             }
-            
-            #hero {
-                background-attachment: scroll !important;
-            }
         }
         
         /* Оптимизация мобильного меню */
@@ -116,9 +130,216 @@
             animation: none !important;
             backdrop-filter: none !important;
         }
+        
+        /* Новые стили для героя */
+        #hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        #hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('IMG_2945.png');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(16, 16, 16, 0.7), rgba(16, 16, 16, 0.9));
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 1rem;
+            max-width: 1200px;
+        }
+        
+        /* Кнопка "Наверх" */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #be38f5, #ff3b8d);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(190, 56, 245, 0.3);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Прелоадер */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #101010;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #ff3b8d;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* FAQ анимация */
+        .faq-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+        }
+        
+        .faq-item.active .faq-toggle {
+            transform: rotate(45deg);
+        }
+        
+        /* WhatsApp виджет */
+        .whatsapp-widget {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #25D366;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Мобильная оптимизация */
+        @media (max-width: 768px) {
+            #hero::before {
+                background-attachment: scroll;
+            }
+            
+            /* Оптимизация для высоких устройств */
+            @media (max-height: 700px) {
+                #hero {
+                    height: 700px;
+                }
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .whatsapp-widget {
+                bottom: 20px;
+                left: 20px;
+                width: 55px;
+                height: 55px;
+            }
+        }
     </style>
+    
+    <!-- Schema.org разметка -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "DanceGroup",
+      "name": "Студия танца Алины Бабаевой",
+      "description": "Профессиональные уроки стрип-пластики. Раскрой свою чувственность и уверенность через танец.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Москва",
+        "streetAddress": "ул. Примерная, 123"
+      },
+      "telephone": "+7-999-123-45-67",
+      "image": "https://alina-babaeva.ru/preview.jpg",
+      "priceRange": "2000-4000 руб.",
+      "openingHours": "Mo, We 20:00-21:30",
+      "url": "https://alina-babaeva.ru"
+    }
+    </script>
 </head>
 <body class="bg-[#101010] text-gray-200">
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- WhatsApp виджет -->
+    <a href="https://wa.me/79991234567" target="_blank" class="whatsapp-widget">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.864 3.49"/>
+        </svg>
+    </a>
+
+    <!-- Кнопка "Наверх" -->
+    <div class="back-to-top" id="backToTop">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </div>
+
     <!-- Скрипт для детекции производительности -->
     <script>
         // Проверяем производительность устройства
@@ -175,6 +396,7 @@
                 <a href="#schedule" class="hover:text-[#ff3b8d] transition-colors duration-200">РАСПИСАНИЕ</a>
                 <a href="#gallery" class="hover:text-[#ff3b8d] transition-colors duration-200">ГАЛЕРЕЯ</a>
                 <a href="#videos" class="hover:text-[#ff3b8d] transition-colors duration-200">ВИДЕО</a>
+                <a href="#faq" class="hover:text-[#ff3b8d] transition-colors duration-200">FAQ</a>
                 <a href="#reviews" class="hover:text-[#ff3b8d] transition-colors duration-200">ОТЗЫВЫ</a>
                 <a href="#contact" class="hover:text-[#ff3b8d] transition-colors duration-200">КОНТАКТЫ</a>
             </nav>
@@ -196,6 +418,7 @@
             <a href="#schedule" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">РАСПИСАНИЕ</a>
             <a href="#gallery" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ГАЛЕРЕЯ</a>
             <a href="#videos" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ВИДЕО</a>
+            <a href="#faq" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">FAQ</a>
             <a href="#reviews" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ОТЗЫВЫ</a>
             <a href="#contact" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">КОНТАКТЫ</a>
         </div>
@@ -203,9 +426,9 @@
 
     <main>
         <!-- СЕКЦИЯ 1: ГЛАВНЫЙ ЭКРАН (оптимизированная) -->
-        <section id="hero" class="h-screen flex items-center justify-center text-center bg-cover bg-center pt-20 no-animation" style="background-image: url('IMG_2945.png'); background-attachment: fixed;">
-            <div class="bg-[#101010]/60 absolute inset-0"></div>
-            <div class="relative z-10 px-4 w-full">
+        <section id="hero">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
                 <h1 class="text-4xl md:text-8xl font-black uppercase text-white tracking-tight md:tracking-widest leading-tight">
                     Танец, который<br><span class="gradient-text">освобождает</span>
                 </h1>
@@ -222,7 +445,7 @@
         <section id="about" class="py-12 md:py-20">
             <div class="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div class="w-full h-auto rounded-2xl overflow-hidden shadow-2xl transform md:rotate-[-3deg] will-change-transform">
-                    <img src="IMG_2944.png" alt="Фото преподавателя" class="w-full h-full object-cover">
+                    <img src="IMG_2944.png" alt="Фото преподавателя Алины Бабаевой" class="w-full h-full object-cover">
                 </div>
                 <div class="md:pr-4 lg:pr-10">
                     <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">Привет, я — <span class="gradient-text">Алина!</span></h2>
@@ -240,6 +463,10 @@
                         <div>
                             <p class="text-3xl md:text-4xl font-black gradient-text">200+</p>
                             <p class="text-xs md:text-sm uppercase tracking-widest text-gray-400">Счастливых учениц</p>
+                        </div>
+                        <div>
+                            <p class="text-3xl md:text-4xl font-black gradient-text">1000+</p>
+                            <p class="text-xs md:text-sm uppercase tracking-widest text-gray-400">Часов тренировок</p>
                         </div>
                     </div>
                 </div>
@@ -296,6 +523,7 @@
                             <p class="text-white mt-1 md:mt-2 text-sm md:text-base"><span class="font-bold">Время:</span> 20:00 - 21:30</p>
                             <p class="text-white mt-1 md:mt-2 text-sm md:text-base"><span class="font-bold">Цена:</span> 4000 ₽ / 8 занятий</p>
                         </div>
+                        <a href="#contact" class="mt-6 bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white text-center font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Записаться</a>
                     </div>
                     <!-- Карточка 2: Индивидуальные -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left flex flex-col">
@@ -307,11 +535,16 @@
                             <p class="text-white mt-1 md:mt-2 text-sm md:text-base"><span class="font-bold">Время:</span> Гибкое</p>
                             <p class="text-white mt-1 md:mt-2 text-sm md:text-base"><span class="font-bold">Цена:</span> от 2500 ₽ / час</p>
                         </div>
+                        <a href="#contact" class="mt-6 bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white text-center font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Записаться</a>
                     </div>
                 </div>
-                <a href="#contact" class="mt-8 md:mt-12 inline-block bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold text-sm md:text-lg uppercase px-8 py-3 md:px-12 md:py-4 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                    Узнать подробности
-                </a>
+                <div class="mt-12 glass-card p-6 md:p-8 rounded-2xl max-w-4xl mx-auto">
+                    <h3 class="font-bold text-2xl md:text-3xl text-white text-center">Пробное занятие</h3>
+                    <p class="text-gray-400 mt-2 text-center">Не уверены, подойдет ли вам? Приходите на пробное занятие всего за 1000 ₽</p>
+                    <a href="#contact" class="mt-4 mx-auto w-fit block bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold text-sm md:text-lg uppercase px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                        Записаться на пробное
+                    </a>
+                </div>
             </div>
         </section>
 
