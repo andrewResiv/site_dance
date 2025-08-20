@@ -423,12 +423,7 @@
             });
         });
 
-        // Кэширование для повторных посещений (Service Worker простая регистрация)
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js').then(() => {
-                console.log('Service Worker Registered');
-            });
-        }
+
     </script>
 
     <!-- НАВИГАЦИЯ -->
