@@ -20,10 +20,10 @@
     <meta property="twitter:description" content="Профессиональные уроки стрип-пластики. Раскрой свою чувственность и уверенность через танец.">
     <meta property="twitter:image" content="https://alina-babaeva.ru/preview.jpg">
     
-    <!-- Подключение Tailwind CSS -->
+    <!-- Подключение Tailwind CSS с CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Подключение шрифтов от Google -->
+    <!-- Подключение шрифтов от Google с CDN -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
@@ -298,6 +298,21 @@
                 height: 55px;
             }
         }
+
+        /* Микроанимации для интерактивных элементов */
+        .micro-hover:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+
+        /* Плавные переходы между секциями (с fallback) */
+        section {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .low-performance section {
+            transition: none;
+        }
     </style>
     
     <!-- Schema.org разметка -->
@@ -319,6 +334,11 @@
       "url": "https://alina-babaeva.ru"
     }
     </script>
+
+    <!-- Preload основных ресурсов -->
+    <link rel="preload" href="IMG_2945.png" as="image">
+    <link rel="preload" href="IMG_2944.png" as="image">
+    <link rel="preload" href="IMG_2947.png" as="image">
 </head>
 <body class="bg-[#101010] text-gray-200">
     <!-- Прелоадер -->
@@ -380,6 +400,35 @@
         
         // Запускаем при загрузке
         document.addEventListener('DOMContentLoaded', checkPerformance);
+
+        // Кнопка наверх
+        window.addEventListener('scroll', () => {
+            const backToTop = document.getElementById('backToTop');
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
+
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // FAQ toggle
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            item.querySelector('.faq-question').addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
+
+        // Кэширование для повторных посещений (Service Worker простая регистрация)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then(() => {
+                console.log('Service Worker Registered');
+            });
+        }
     </script>
 
     <!-- НАВИГАЦИЯ -->
@@ -397,6 +446,8 @@
                 <a href="#gallery" class="hover:text-[#ff3b8d] transition-colors duration-200">ГАЛЕРЕЯ</a>
                 <a href="#videos" class="hover:text-[#ff3b8d] transition-colors duration-200">ВИДЕО</a>
                 <a href="#faq" class="hover:text-[#ff3b8d] transition-colors duration-200">FAQ</a>
+                <a href="#success-stories" class="hover:text-[#ff3b8d] transition-colors duration-200">ИСТОРИИ УСПЕХА</a>
+                <a href="#blog" class="hover:text-[#ff3b8d] transition-colors duration-200">БЛОГ</a>
                 <a href="#reviews" class="hover:text-[#ff3b8d] transition-colors duration-200">ОТЗЫВЫ</a>
                 <a href="#contact" class="hover:text-[#ff3b8d] transition-colors duration-200">КОНТАКТЫ</a>
             </nav>
@@ -419,6 +470,8 @@
             <a href="#gallery" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ГАЛЕРЕЯ</a>
             <a href="#videos" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ВИДЕО</a>
             <a href="#faq" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">FAQ</a>
+            <a href="#success-stories" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ИСТОРИИ УСПЕХА</a>
+            <a href="#blog" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">БЛОГ</a>
             <a href="#reviews" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ОТЗЫВЫ</a>
             <a href="#contact" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">КОНТАКТЫ</a>
         </div>
@@ -445,7 +498,7 @@
         <section id="about" class="py-12 md:py-20">
             <div class="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div class="w-full h-auto rounded-2xl overflow-hidden shadow-2xl transform md:rotate-[-3deg] will-change-transform">
-                    <img src="IMG_2944.png" alt="Фото преподавателя Алины Бабаевой" class="w-full h-full object-cover">
+                    <img src="IMG_2944.png" alt="Фото преподавателя Алины Бабаевой" class="w-full h-full object-cover" loading="lazy">
                 </div>
                 <div class="md:pr-4 lg:pr-10">
                     <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">Привет, я — <span class="gradient-text">Алина!</span></h2>
@@ -525,10 +578,10 @@
                         </div>
                         <a href="#contact" class="mt-6 bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white text-center font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Записаться</a>
                     </div>
-                    <!-- Карточка 2: Индивидуальные -->
+                    <!-- Карточка 2: Индивидуальные (исправлено) -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left flex flex-col">
                         <h3 class="font-bold text-2xl md:text-3xl gradient-text">Индивидуальные</h3>
-                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base flex-grow">Полное погружение, персональная работа над вашими целями и постановка танца.</p>
+                        <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base flex-grow">Полное погружение, персональная работа над вашими целями и постановка танца.</p>
                         <div class="mt-4 md:mt-6 border-t border-gray-700 pt-4 md:pt-6">
                             <p class="text-white text-sm md:text-base"><span class="font-bold">Уровень:</span> Любой</p>
                             <p class="text-white mt-1 md:mt-2 text-sm md:text-base"><span class="font-bold">Дни:</span> По договоренности</p>
@@ -539,11 +592,28 @@
                     </div>
                 </div>
                 <div class="mt-12 glass-card p-6 md:p-8 rounded-2xl max-w-4xl mx-auto">
-                    <h3 class="font-bold text-2xl md:text-3xl text-white text-center">Пробное занятие</h3>
+                    <h3 class="font-bold text-2xl md:text-3xl text-white text-white text-center">Пробное занятие</h3>
                     <p class="text-gray-400 mt-2 text-center">Не уверены, подойдет ли вам? Приходите на пробное занятие всего за 1000 ₽</p>
                     <a href="#contact" class="mt-4 mx-auto w-fit block bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold text-sm md:text-lg uppercase px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
                         Записаться на пробное
                     </a>
+                </div>
+                <!-- Онлайн-запись на занятия -->
+                <div class="mt-12 glass-card p-6 md:p-8 rounded-2xl max-w-4xl mx-auto">
+                    <h3 class="font-bold text-2xl md:text-3xl text-white text-center">Онлайн-запись</h3>
+                    <p class="text-gray-400 mt-2 text-center">Выберите дату и время для записи.</p>
+                    <form action="https://formspree.io/f/your_form_id" method="POST" class="mt-4 space-y-4">
+                        <input type="text" name="name" placeholder="Ваше имя" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
+                        <input type="email" name="email" placeholder="Ваш email" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
+                        <input type="date" name="date" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
+                        <input type="time" name="time" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
+                        <select name="type" class="w-full p-3 bg-gray-800 rounded-lg text-white">
+                            <option>Групповое</option>
+                            <option>Индивидуальное</option>
+                            <option>Пробное</option>
+                        </select>
+                        <button type="submit" class="w-full bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Записаться</button>
+                    </form>
                 </div>
             </div>
         </section>
@@ -570,7 +640,7 @@
                 <div class="mt-8 md:mt-16 grid md:grid-cols-2 gap-4 md:gap-8">
                     <!-- Видео 1 -->
                     <div class="aspect-video bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer">
-                        <img src="https://placehold.co/800x450/1a1a1a/333333?text=Обложка+видео+1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Видео танца 1">
+                        <img src="https://placehold.co/800x450/1a1a1a/333333?text=Обложка+видео+1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Обложка видео танца 1">
                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                             <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-colors">
                                 <svg class="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
@@ -579,12 +649,114 @@
                     </div>
                     <!-- Видео 2 -->
                     <div class="aspect-video bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer">
-                        <img src="https://placehold.co/800x450/1a1a1a/333333?text=Обложка+видео+2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Видео танца 2">
+                        <img src="https://placehold.co/800x450/1a1a1a/333333?text=Обложка+видео+2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Обложка видео танца 2">
                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                             <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-colors">
                                 <svg class="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СЕКЦИЯ: ЧАСТЫЕ ВОПРОСЫ (FAQ) -->
+        <section id="faq" class="py-12 md:py-20 bg-black bg-opacity-20">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-center text-3xl md:text-5xl font-bold text-white">Частые вопросы</h2>
+                <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-center text-gray-400 text-sm md:text-base">Ответы на самые популярные вопросы о наших занятиях.</p>
+                <div class="mt-8 md:mt-16 max-w-3xl mx-auto space-y-4">
+                    <div class="faq-item glass-card p-4 md:p-6 rounded-xl cursor-pointer">
+                        <div class="faq-question flex justify-between items-center">
+                            <h3 class="text-white font-bold">Нужна ли подготовка для начала занятий?</h3>
+                            <span class="faq-toggle text-gray-400">+</span>
+                        </div>
+                        <div class="faq-answer mt-2 text-gray-300">
+                            <p>Нет, наши занятия подходят для начинающих. Мы начинаем с основ и постепенно усложняем.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card p-4 md:p-6 rounded-xl cursor-pointer">
+                        <div class="faq-question flex justify-between items-center">
+                            <h3 class="text-white font-bold">Что надеть на занятие?</h3>
+                            <span class="faq-toggle text-gray-400">+</span>
+                        </div>
+                        <div class="faq-answer mt-2 text-gray-300">
+                            <p>Удобную одежду, в которой вы чувствуете себя комфортно. Рекомендуем лосины и топ.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item glass-card p-4 md:p-6 rounded-xl cursor-pointer">
+                        <div class="faq-question flex justify-between items-center">
+                            <h3 class="text-white font-bold">Сколько стоит абонемент?</h3>
+                            <span class="faq-toggle text-gray-400">+</span>
+                        </div>
+                        <div class="faq-answer mt-2 text-gray-300">
+                            <p>Групповые - 4000 ₽ за 8 занятий, индивидуальные - от 2500 ₽/час.</p>
+                        </div>
+                    </div>
+                    <!-- Добавьте больше вопросов по необходимости -->
+                </div>
+            </div>
+        </section>
+
+        <!-- СЕКЦИЯ: ИСТОРИИ УСПЕХА -->
+        <section id="success-stories" class="py-12 md:py-20">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-center text-3xl md:text-5xl font-bold text-white">Истории успеха</h2>
+                <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-center text-gray-400 text-sm md:text-base">Подробные кейсы наших учениц и их трансформации.</p>
+                <div class="mt-8 md:mt-16 grid md:grid-cols-2 gap-4 md:gap-8">
+                    <!-- История 1 -->
+                    <div class="glass-card p-6 md:p-8 rounded-2xl">
+                        <h3 class="font-bold text-xl md:text-2xl text-white">Анна: От зажатости к уверенности</h3>
+                        <p class="text-gray-300 mt-2">Анна пришла к нам с нулевым опытом. Через 3 месяца она выступила на открытом уроке, преодолев страх сцены. Теперь она чувствует себя грациозной и женственной в повседневной жизни.</p>
+                        <div class="mt-4 flex items-center">
+                            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=А" alt="Аватар Анны" class="w-full h-full object-cover"></div>
+                            <div class="ml-3">
+                                <p class="font-bold text-white">Анна К.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- История 2 -->
+                    <div class="glass-card p-6 md:p-8 rounded-2xl">
+                        <h3 class="font-bold text-xl md:text-2xl text-white">Мария: Танец как терапия</h3>
+                        <p class="text-gray-300 mt-2">Мария боролась с послеродовой депрессией. Занятия помогли ей восстановить связь с телом. Сейчас она мотивирует других мам и даже начала вести свой блог о саморазвитии.</p>
+                        <div class="mt-4 flex items-center">
+                            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=М" alt="Аватар Марии" class="w-full h-full object-cover"></div>
+                            <div class="ml-3">
+                                <p class="font-bold text-white">Мария В.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Добавьте больше историй -->
+                </div>
+            </div>
+        </section>
+
+        <!-- СЕКЦИЯ: БЛОГ -->
+        <section id="blog" class="py-12 md:py-20 bg-black bg-opacity-20">
+            <div class="container mx-auto px-4 md:px-6">
+                <h2 class="text-center text-3xl md:text-5xl font-bold text-white">Блог</h2>
+                <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-center text-gray-400 text-sm md:text-base">Статьи о танцах, саморазвитии и уверенности в себе.</p>
+                <div class="mt-8 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-8">
+                    <!-- Статья 1 -->
+                    <div class="glass-card p-6 rounded-2xl text-left micro-hover">
+                        <img src="https://placehold.co/400x250/1a1a1a/333333?text=Статья+1" alt="Изображение статьи 1" class="w-full h-40 object-cover rounded-t-2xl">
+                        <h3 class="font-bold text-xl text-white mt-4">Как стрип-пластика помогает в саморазвитии</h3>
+                        <p class="text-gray-400 mt-2 text-sm">Разбираем, почему танец — это не только тело, но и душа.</p>
+                        <a href="#" class="mt-4 block text-[#ff3b8d] font-bold">Читать далее</a>
+                    </div>
+                    <!-- Статья 2 -->
+                    <div class="glass-card p-6 rounded-2xl text-left micro-hover">
+                        <img src="https://placehold.co/400x250/1a1a1a/333333?text=Статья+2" alt="Изображение статьи 2" class="w-full h-40 object-cover rounded-t-2xl">
+                        <h3 class="font-bold text-xl text-white mt-4">Уверенность через движение</h3>
+                        <p class="text-gray-400 mt-2 text-sm">Практические советы для повышения самооценки.</p>
+                        <a href="#" class="mt-4 block text-[#ff3b8d] font-bold">Читать далее</a>
+                    </div>
+                    <!-- Статья 3 -->
+                    <div class="glass-card p-6 rounded-2xl text-left micro-hover">
+                        <img src="https://placehold.co/400x250/1a1a1a/333333?text=Статья+3" alt="Изображение статьи 3" class="w-full h-40 object-cover rounded-t-2xl">
+                        <h3 class="font-bold text-xl text-white mt-4">Топ 5 упражнений для грации</h3>
+                        <p class="text-gray-400 mt-2 text-sm">Простые техники для дома.</p>
+                        <a href="#" class="mt-4 block text-[#ff3b8d] font-bold">Читать далее</a>
                     </div>
                 </div>
             </div>
@@ -600,7 +772,7 @@
                     <div class="glass-card p-6 md:p-8 rounded-2xl">
                         <p class="text-gray-300 text-sm md:text-base">"Я пришла на занятия совершенно 'деревянной' и зажатой. Уже через месяц я почувствовала себя совершенно иначе! Алина — невероятный преподаватель, она заряжает и вдохновляет. Спасибо за новую меня!"</p>
                         <div class="mt-4 md:mt-6 flex items-center">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=А" alt="Аватар клиента" class="w-full h-full object-cover"></div>
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=А" alt="Аватар Анны К." class="w-full h-full object-cover"></div>
                             <div class="ml-3 md:ml-4">
                                 <p class="font-bold text-white text-sm md:text-base">Анна К.</p>
                                 <p class="text-xs md:text-sm text-gray-500">Ученица</p>
@@ -611,7 +783,7 @@
                     <div class="glass-card p-6 md:p-8 rounded-2xl transform lg:scale-105 lg:-translate-y-4 bg-white/10 border-purple-500/50">
                          <p class="text-gray-300 text-sm md:text-base">"Это лучшее, что случалось с моим телом и самооценкой! Атмосфера на занятиях просто волшебная — полная поддержка и никакой критики. Каждую тренировку жду с нетерпением. Алина, ты лучшая!"</p>
                         <div class="mt-4 md:mt-6 flex items-center">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=М" alt="Аватар клиента" class="w-full h-full object-cover"></div>
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=М" alt="Аватар Марии В." class="w-full h-full object-cover"></div>
                             <div class="ml-3 md:ml-4">
                                 <p class="font-bold text-white gradient-text text-sm md:text-base">Мария В.</p>
                                 <p class="text-xs md:text-sm text-gray-500">Ученица</p>
@@ -622,7 +794,7 @@
                     <div class="glass-card p-6 md:p-8 rounded-2xl">
                         <p class="text-gray-300 text-sm md:text-base">"Никогда бы не подумала, что смогу так двигаться. Стрип-пластика раскрыла во мне ту женственность, которую я прятала. Спасибо за то, что помогаешь нам становиться увереннее!"</p>
                         <div class="mt-4 md:mt-6 flex items-center">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=Е" alt="Аватар клиента" class="w-full h-full object-cover"></div>
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=Е" alt="Аватар Екатерины" class="w-full h-full object-cover"></div>
                             <div class="ml-3 md:ml-4">
                                 <p class="font-bold text-white text-sm md:text-base">Екатерина</p>
                                 <p class="text-xs md:text-sm text-gray-500">Ученица</p>
@@ -653,6 +825,16 @@
                     <a href="https://wa.me/your_phone_number" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-gray-800 rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.89-5.451 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.001.004 4.971 3.688.243.028z"/></svg>
                     </a>
+                </div>
+                <!-- Форма обратной связи -->
+                <div class="mt-12 glass-card p-6 md:p-8 rounded-2xl max-w-xl mx-auto">
+                    <h3 class="font-bold text-2xl md:text-3xl text-white text-center">Форма обратной связи</h3>
+                    <form action="https://formspree.io/f/your_form_id" method="POST" class="mt-4 space-y-4">
+                        <input type="text" name="name" placeholder="Ваше имя" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
+                        <input type="email" name="email" placeholder="Ваш email" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
+                        <textarea name="message" placeholder="Ваше сообщение" class="w-full p-3 bg-gray-800 rounded-lg text-white h-32" required></textarea>
+                        <button type="submit" class="w-full bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Отправить</button>
+                    </form>
                 </div>
             </div>
         </section>
@@ -737,7 +919,38 @@
         }
         
         // Запускаем после полной загрузки страницы
-        window.addEventListener('load', lazyLoadImages);
+        window.addEventListener('load', function() {
+            lazyLoadImages();
+            document.getElementById('preloader').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('preloader').style.display = 'none';
+            }, 500);
+        });
     </script>
+
+    <!-- Пример Service Worker для кэширования (sw.js) - создайте отдельный файл sw.js с содержимым ниже -->
+    <!-- 
+    self.addEventListener('install', (e) => {
+      e.waitUntil(
+        caches.open('cache-v1').then((cache) => {
+          return cache.addAll([
+            '/',
+            '/IMG_2945.png',
+            '/IMG_2944.png',
+            '/IMG_2947.png',
+            // Добавьте другие ресурсы
+          ]);
+        })
+      );
+    });
+
+    self.addEventListener('fetch', (e) => {
+      e.respondWith(
+        caches.match(e.request).then((response) => {
+          return response || fetch(e.request);
+        })
+      );
+    });
+    -->
 </body>
 </html>
