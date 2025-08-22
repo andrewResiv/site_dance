@@ -8,17 +8,17 @@
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://alina-babaeva.ru/">
+    <meta property="og:url" content="https://alinadance.ru/">
     <meta property="og:title" content="Студия танца Алины Бабаевой | Стрип-пластика">
     <meta property="og:description" content="Профессиональные уроки стрип-пластики. Раскрой свою чувственность и уверенность через танец.">
-    <meta property="og:image" content="https://alina-babaeva.ru/preview.jpg">
+    <meta property="og:image" content="https://alinadance.ru/images/preview.jpg">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://alina-babaeva.ru/">
+    <meta property="twitter:url" content="https://alinadance.ru/">
     <meta property="twitter:title" content="Студия танца Алины Бабаевой | Стрип-пластика">
     <meta property="twitter:description" content="Профессиональные уроки стрип-пластики. Раскрой свою чувственность и уверенность через танец.">
-    <meta property="twitter:image" content="https://alina-babaeva.ru/preview.jpg">
+    <meta property="twitter:image" content="https://alinadance.ru/images/preview.jpg">
     
     <!-- Подключение Tailwind CSS с CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -31,6 +31,12 @@
     <!-- Иконка сайта -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💃</text></svg>">
     
+    <!-- Preload основных ресурсов -->
+    <link rel="preload" href="/images/hero.jpg" as="image">
+    <link rel="preload" href="/images/about.jpg" as="image">
+    <link rel="preload" href="/images/contact.jpg" as="image">
+    <link rel="preload" href="/images/fallback.jpg" as="image">
+
     <style>
         /* Базовые стили */
         body {
@@ -115,23 +121,52 @@
             opacity: 1;
         }
         
-        /* Оптимизация изображений */
-        img {
-            max-width: 100%;
-            height: auto;
-            vertical-align: middle;
-            border-style: none;
+        /* Заглушка для изображений */
+        .img-container {
+            position: relative;
+            background-color: #1a1a1a;
+            overflow: hidden;
         }
         
-        /* Отключаем сложные эффекты для слабых устройств */
-        .low-performance * {
+        .img-container img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .img-container img:not([src]),
+        .img-container img[src=""] {
+            visibility: hidden;
+        }
+        
+        .img-container img[src="/images/fallback.jpg"] {
+            background-color: #1a1a1a;
+            opacity: 0.5;
+        }
+        
+        /* Отключаем анимации для отсутствующих изображений */
+        .img-container img:not([src]),
+        .img-container img[src=""], 
+        .img-container img[src="/images/fallback.jpg"] {
             transform: none !important;
             transition: none !important;
-            animation: none !important;
-            backdrop-filter: none !important;
         }
         
-        /* Новые стили для героя */
+        /* Видео-превью */
+        .video-preview {
+            position: relative;
+            background-color: #1a1a1a;
+        }
+        
+        .video-preview img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        /* Стили для героя */
         #hero {
             position: relative;
             height: 100vh;
@@ -148,7 +183,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-image: url('IMG_2945.png');
+            background-image: url('/images/hero.jpg');
             background-size: cover;
             background-position: center center;
             background-repeat: no-repeat;
@@ -171,6 +206,31 @@
             text-align: center;
             padding: 0 1rem;
             max-width: 1200px;
+        }
+        
+        /* WhatsApp виджет */
+        .whatsapp-widget {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #25D366;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
         
         /* Кнопка "Наверх" */
@@ -197,78 +257,6 @@
         .back-to-top.visible {
             opacity: 1;
             visibility: visible;
-        }
-        
-        /* Прелоадер */
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #101010;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.5s ease;
-        }
-        
-        .loader {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top-color: #ff3b8d;
-            animation: spin 1s ease-in-out infinite;
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* FAQ анимация */
-        .faq-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-        
-        .faq-item.active .faq-answer {
-            max-height: 300px;
-        }
-        
-        .faq-item.active .faq-toggle {
-            transform: rotate(45deg);
-        }
-        
-        /* WhatsApp виджет */
-        .whatsapp-widget {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: #25D366;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
         }
         
         /* Мобильная оптимизация */
@@ -324,30 +312,18 @@
       "description": "Профессиональные уроки стрип-пластики. Раскрой свою чувственность и уверенность через танец.",
       "address": {
         "@type": "PostalAddress",
-        "addressLocality": "Москва",
-        "streetAddress": "ул. Примерная, 123"
+        "addressLocality": "Москва"
       },
-      "telephone": "+7-999-123-45-67",
-      "image": "https://alina-babaeva.ru/preview.jpg",
+      "image": "https://alinadance.ru/images/preview.jpg",
       "priceRange": "2000-4000 руб.",
       "openingHours": "Mo, We 20:00-21:30",
-      "url": "https://alina-babaeva.ru"
+      "url": "https://alinadance.ru"
     }
     </script>
-
-    <!-- Preload основных ресурсов -->
-    <link rel="preload" href="IMG_2945.png" as="image">
-    <link rel="preload" href="IMG_2944.png" as="image">
-    <link rel="preload" href="IMG_2947.png" as="image">
 </head>
 <body class="bg-[#101010] text-gray-200">
-    <!-- Прелоадер -->
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
-
     <!-- WhatsApp виджет -->
-    <a href="https://wa.me/79991234567" target="_blank" class="whatsapp-widget">
+    <a href="https://wa.me/your_phone_number" target="_blank" class="whatsapp-widget">
         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.864 3.49"/>
         </svg>
@@ -359,72 +335,6 @@
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
     </div>
-
-    <!-- Скрипт для детекции производительности -->
-    <script>
-        // Проверяем производительность устройства
-        function checkPerformance() {
-            const isLowPerformance = 
-                window.matchMedia('(max-resolution: 60dpi)').matches || 
-                /iPhone|iPad|iPod/i.test(navigator.userAgent) && !window.matchMedia('(min-resolution: 120dpi)').matches;
-            
-            if (isLowPerformance) {
-                document.documentElement.classList.add('low-performance');
-                document.documentElement.classList.add('no-animation');
-                document.documentElement.classList.add('simplified-effects');
-            }
-            
-            // Оптимизация скролла
-            const smoothLinks = document.querySelectorAll('a[href^="#"]');
-            for (let smoothLink of smoothLinks) {
-                smoothLink.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    
-                    if (isLowPerformance || window.innerWidth < 768) {
-                        targetElement.scrollIntoView({ behavior: 'auto' });
-                    } else {
-                        targetElement.scrollIntoView({ behavior: 'smooth' });
-                    }
-                    
-                    // Закрываем мобильное меню если открыто
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    if (mobileMenu.classList.contains('active')) {
-                        mobileMenu.classList.remove('active');
-                        document.getElementById('menu-toggle').classList.remove('active');
-                    }
-                });
-            }
-        }
-        
-        // Запускаем при загрузке
-        document.addEventListener('DOMContentLoaded', checkPerformance);
-
-        // Кнопка наверх
-        window.addEventListener('scroll', () => {
-            const backToTop = document.getElementById('backToTop');
-            if (window.scrollY > 300) {
-                backToTop.classList.add('visible');
-            } else {
-                backToTop.classList.remove('visible');
-            }
-        });
-
-        document.getElementById('backToTop').addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // FAQ toggle
-        const faqItems = document.querySelectorAll('.faq-item');
-        faqItems.forEach(item => {
-            item.querySelector('.faq-question').addEventListener('click', () => {
-                item.classList.toggle('active');
-            });
-        });
-
-
-    </script>
 
     <!-- НАВИГАЦИЯ -->
     <header class="bg-[#101010]/80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 simplified-effects">
@@ -440,9 +350,6 @@
                 <a href="#schedule" class="hover:text-[#ff3b8d] transition-colors duration-200">РАСПИСАНИЕ</a>
                 <a href="#gallery" class="hover:text-[#ff3b8d] transition-colors duration-200">ГАЛЕРЕЯ</a>
                 <a href="#videos" class="hover:text-[#ff3b8d] transition-colors duration-200">ВИДЕО</a>
-                <a href="#faq" class="hover:text-[#ff3b8d] transition-colors duration-200">FAQ</a>
-                <a href="#success-stories" class="hover:text-[#ff3b8d] transition-colors duration-200">ИСТОРИИ УСПЕХА</a>
-                <a href="#blog" class="hover:text-[#ff3b8d] transition-colors duration-200">БЛОГ</a>
                 <a href="#reviews" class="hover:text-[#ff3b8d] transition-colors duration-200">ОТЗЫВЫ</a>
                 <a href="#contact" class="hover:text-[#ff3b8d] transition-colors duration-200">КОНТАКТЫ</a>
             </nav>
@@ -464,16 +371,13 @@
             <a href="#schedule" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">РАСПИСАНИЕ</a>
             <a href="#gallery" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ГАЛЕРЕЯ</a>
             <a href="#videos" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ВИДЕО</a>
-            <a href="#faq" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">FAQ</a>
-            <a href="#success-stories" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ИСТОРИИ УСПЕХА</a>
-            <a href="#blog" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">БЛОГ</a>
             <a href="#reviews" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">ОТЗЫВЫ</a>
             <a href="#contact" class="block py-2 hover:text-[#ff3b8d] transition-colors duration-200">КОНТАКТЫ</a>
         </div>
     </header>
 
     <main>
-        <!-- СЕКЦИЯ 1: ГЛАВНЫЙ ЭКРАН (оптимизированная) -->
+        <!-- СЕКЦИЯ 1: ГЛАВНЫЙ ЭКРАН -->
         <section id="hero">
             <div class="hero-overlay"></div>
             <div class="hero-content">
@@ -492,8 +396,8 @@
         <!-- СЕКЦИЯ 2: О ПРЕПОДАВАТЕЛЕ -->
         <section id="about" class="py-12 md:py-20">
             <div class="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-                <div class="w-full h-auto rounded-2xl overflow-hidden shadow-2xl transform md:rotate-[-3deg] will-change-transform">
-                    <img src="IMG_2944.png" alt="Фото преподавателя Алины Бабаевой" class="w-full h-full object-cover" loading="lazy">
+                <div class="img-container w-full h-auto rounded-2xl overflow-hidden shadow-2xl transform md:rotate-[-3deg] will-change-transform">
+                    <img src="/images/about.jpg" alt="Фото преподавателя Алины Бабаевой" class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'">
                 </div>
                 <div class="md:pr-4 lg:pr-10">
                     <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">Привет, я — <span class="gradient-text">Алина!</span></h2>
@@ -557,7 +461,7 @@
 
         <!-- СЕКЦИЯ 4: РАСПИСАНИЕ -->
         <section id="schedule" class="py-12 md:py-20">
-             <div class="container mx-auto px-4 md:px-6 text-center">
+            <div class="container mx-auto px-4 md:px-6 text-center">
                 <h2 class="text-3xl md:text-5xl font-bold text-white">Расписание и форматы</h2>
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Выбери удобный для себя вариант и начни свой танцевальный путь.</p>
                 <div class="mt-8 md:mt-16 grid md:grid-cols-2 gap-4 md:gap-8 max-w-4xl mx-auto">
@@ -573,7 +477,7 @@
                         </div>
                         <a href="#contact" class="mt-6 bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white text-center font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Записаться</a>
                     </div>
-                    <!-- Карточка 2: Индивидуальные (исправлено) -->
+                    <!-- Карточка 2: Индивидуальные -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left flex flex-col">
                         <h3 class="font-bold text-2xl md:text-3xl gradient-text">Индивидуальные</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base flex-grow">Полное погружение, персональная работа над вашими целями и постановка танца.</p>
@@ -586,30 +490,6 @@
                         <a href="#contact" class="mt-6 bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white text-center font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Записаться</a>
                     </div>
                 </div>
-                <div class="mt-12 glass-card p-6 md:p-8 rounded-2xl max-w-4xl mx-auto">
-                    <h3 class="font-bold text-2xl md:text-3xl text-white text-white text-center">Пробное занятие</h3>
-                    <p class="text-gray-400 mt-2 text-center">Не уверены, подойдет ли вам? Приходите на пробное занятие всего за 1000 ₽</p>
-                    <a href="#contact" class="mt-4 mx-auto w-fit block bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold text-sm md:text-lg uppercase px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                        Записаться на пробное
-                    </a>
-                </div>
-                <!-- Онлайн-запись на занятия -->
-                <div class="mt-12 glass-card p-6 md:p-8 rounded-2xl max-w-4xl mx-auto">
-                    <h3 class="font-bold text-2xl md:text-3xl text-white text-center">Онлайн-запись</h3>
-                    <p class="text-gray-400 mt-2 text-center">Выберите дату и время для записи.</p>
-                    <form action="https://formspree.io/f/your_form_id" method="POST" class="mt-4 space-y-4">
-                        <input type="text" name="name" placeholder="Ваше имя" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
-                        <input type="email" name="email" placeholder="Ваш email" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
-                        <input type="date" name="date" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
-                        <input type="time" name="time" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
-                        <select name="type" class="w-full p-3 bg-gray-800 rounded-lg text-white">
-                            <option>Групповое</option>
-                            <option>Индивидуальное</option>
-                            <option>Пробное</option>
-                        </select>
-                        <button type="submit" class="w-full bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Записаться</button>
-                    </form>
-                </div>
             </div>
         </section>
 
@@ -619,10 +499,10 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-white">Атмосфера наших занятий</h2>
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Здесь слова не нужны. Просто почувствуй эту энергию.</p>
                 <div class="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
-                    <div class="h-40 md:h-64 rounded-xl overflow-hidden"><img src="https://placehold.co/400x600/1a1a1a/333333?text=Фото+1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 1"></div>
-                    <div class="h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="https://placehold.co/400x600/1a1a1a/333333?text=Фото+2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 2"></div>
-                    <div class="h-40 md:h-64 rounded-xl overflow-hidden"><img src="https://placehold.co/400x600/1a1a1a/333333?text=Фото+3" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 3"></div>
-                    <div class="h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="https://placehold.co/400x600/1a1a1a/333333?text=Фото+4" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 4"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/photo1.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 1" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/photo2.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 2" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/photo3.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 3" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/photo4.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 4" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
                 </div>
             </div>
         </section>
@@ -634,8 +514,8 @@
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Почувствуй пластику и энергию каждого танца.</p>
                 <div class="mt-8 md:mt-16 grid md:grid-cols-2 gap-4 md:gap-8">
                     <!-- Видео 1 -->
-                    <div class="aspect-video bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer">
-                        <img src="https://placehold.co/800x450/1a1a1a/333333?text=Обложка+видео+1" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Обложка видео танца 1">
+                    <div class="video-preview aspect-video bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer">
+                        <img src="/images/video1.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Обложка видео танца 1" loading="lazy" onerror="this.src='/images/fallback.jpg'">
                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                             <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-colors">
                                 <svg class="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
@@ -643,115 +523,13 @@
                         </div>
                     </div>
                     <!-- Видео 2 -->
-                    <div class="aspect-video bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer">
-                        <img src="https://placehold.co/800x450/1a1a1a/333333?text=Обложка+видео+2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Обложка видео танца 2">
+                    <div class="video-preview aspect-video bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer">
+                        <img src="/images/video2.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Обложка видео танца 2" loading="lazy" onerror="this.src='/images/fallback.jpg'">
                         <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
                             <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-colors">
                                 <svg class="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- СЕКЦИЯ: ЧАСТЫЕ ВОПРОСЫ (FAQ) -->
-        <section id="faq" class="py-12 md:py-20 bg-black bg-opacity-20">
-            <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-center text-3xl md:text-5xl font-bold text-white">Частые вопросы</h2>
-                <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-center text-gray-400 text-sm md:text-base">Ответы на самые популярные вопросы о наших занятиях.</p>
-                <div class="mt-8 md:mt-16 max-w-3xl mx-auto space-y-4">
-                    <div class="faq-item glass-card p-4 md:p-6 rounded-xl cursor-pointer">
-                        <div class="faq-question flex justify-between items-center">
-                            <h3 class="text-white font-bold">Нужна ли подготовка для начала занятий?</h3>
-                            <span class="faq-toggle text-gray-400">+</span>
-                        </div>
-                        <div class="faq-answer mt-2 text-gray-300">
-                            <p>Нет, наши занятия подходят для начинающих. Мы начинаем с основ и постепенно усложняем.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item glass-card p-4 md:p-6 rounded-xl cursor-pointer">
-                        <div class="faq-question flex justify-between items-center">
-                            <h3 class="text-white font-bold">Что надеть на занятие?</h3>
-                            <span class="faq-toggle text-gray-400">+</span>
-                        </div>
-                        <div class="faq-answer mt-2 text-gray-300">
-                            <p>Удобную одежду, в которой вы чувствуете себя комфортно. Рекомендуем лосины и топ.</p>
-                        </div>
-                    </div>
-                    <div class="faq-item glass-card p-4 md:p-6 rounded-xl cursor-pointer">
-                        <div class="faq-question flex justify-between items-center">
-                            <h3 class="text-white font-bold">Сколько стоит абонемент?</h3>
-                            <span class="faq-toggle text-gray-400">+</span>
-                        </div>
-                        <div class="faq-answer mt-2 text-gray-300">
-                            <p>Групповые - 4000 ₽ за 8 занятий, индивидуальные - от 2500 ₽/час.</p>
-                        </div>
-                    </div>
-                    <!-- Добавьте больше вопросов по необходимости -->
-                </div>
-            </div>
-        </section>
-
-        <!-- СЕКЦИЯ: ИСТОРИИ УСПЕХА -->
-        <section id="success-stories" class="py-12 md:py-20">
-            <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-center text-3xl md:text-5xl font-bold text-white">Истории успеха</h2>
-                <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-center text-gray-400 text-sm md:text-base">Подробные кейсы наших учениц и их трансформации.</p>
-                <div class="mt-8 md:mt-16 grid md:grid-cols-2 gap-4 md:gap-8">
-                    <!-- История 1 -->
-                    <div class="glass-card p-6 md:p-8 rounded-2xl">
-                        <h3 class="font-bold text-xl md:text-2xl text-white">Анна: От зажатости к уверенности</h3>
-                        <p class="text-gray-300 mt-2">Анна пришла к нам с нулевым опытом. Через 3 месяца она выступила на открытом уроке, преодолев страх сцены. Теперь она чувствует себя грациозной и женственной в повседневной жизни.</p>
-                        <div class="mt-4 flex items-center">
-                            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=А" alt="Аватар Анны" class="w-full h-full object-cover"></div>
-                            <div class="ml-3">
-                                <p class="font-bold text-white">Анна К.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- История 2 -->
-                    <div class="glass-card p-6 md:p-8 rounded-2xl">
-                        <h3 class="font-bold text-xl md:text-2xl text-white">Мария: Танец как терапия</h3>
-                        <p class="text-gray-300 mt-2">Мария боролась с послеродовой депрессией. Занятия помогли ей восстановить связь с телом. Сейчас она мотивирует других мам и даже начала вести свой блог о саморазвитии.</p>
-                        <div class="mt-4 flex items-center">
-                            <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=М" alt="Аватар Марии" class="w-full h-full object-cover"></div>
-                            <div class="ml-3">
-                                <p class="font-bold text-white">Мария В.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Добавьте больше историй -->
-                </div>
-            </div>
-        </section>
-
-        <!-- СЕКЦИЯ: БЛОГ -->
-        <section id="blog" class="py-12 md:py-20 bg-black bg-opacity-20">
-            <div class="container mx-auto px-4 md:px-6">
-                <h2 class="text-center text-3xl md:text-5xl font-bold text-white">Блог</h2>
-                <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-center text-gray-400 text-sm md:text-base">Статьи о танцах, саморазвитии и уверенности в себе.</p>
-                <div class="mt-8 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-8">
-                    <!-- Статья 1 -->
-                    <div class="glass-card p-6 rounded-2xl text-left micro-hover">
-                        <img src="https://placehold.co/400x250/1a1a1a/333333?text=Статья+1" alt="Изображение статьи 1" class="w-full h-40 object-cover rounded-t-2xl">
-                        <h3 class="font-bold text-xl text-white mt-4">Как стрип-пластика помогает в саморазвитии</h3>
-                        <p class="text-gray-400 mt-2 text-sm">Разбираем, почему танец — это не только тело, но и душа.</p>
-                        <a href="#" class="mt-4 block text-[#ff3b8d] font-bold">Читать далее</a>
-                    </div>
-                    <!-- Статья 2 -->
-                    <div class="glass-card p-6 rounded-2xl text-left micro-hover">
-                        <img src="https://placehold.co/400x250/1a1a1a/333333?text=Статья+2" alt="Изображение статьи 2" class="w-full h-40 object-cover rounded-t-2xl">
-                        <h3 class="font-bold text-xl text-white mt-4">Уверенность через движение</h3>
-                        <p class="text-gray-400 mt-2 text-sm">Практические советы для повышения самооценки.</p>
-                        <a href="#" class="mt-4 block text-[#ff3b8d] font-bold">Читать далее</a>
-                    </div>
-                    <!-- Статья 3 -->
-                    <div class="glass-card p-6 rounded-2xl text-left micro-hover">
-                        <img src="https://placehold.co/400x250/1a1a1a/333333?text=Статья+3" alt="Изображение статьи 3" class="w-full h-40 object-cover rounded-t-2xl">
-                        <h3 class="font-bold text-xl text-white mt-4">Топ 5 упражнений для грации</h3>
-                        <p class="text-gray-400 mt-2 text-sm">Простые техники для дома.</p>
-                        <a href="#" class="mt-4 block text-[#ff3b8d] font-bold">Читать далее</a>
                     </div>
                 </div>
             </div>
@@ -767,18 +545,18 @@
                     <div class="glass-card p-6 md:p-8 rounded-2xl">
                         <p class="text-gray-300 text-sm md:text-base">"Я пришла на занятия совершенно 'деревянной' и зажатой. Уже через месяц я почувствовала себя совершенно иначе! Алина — невероятный преподаватель, она заряжает и вдохновляет. Спасибо за новую меня!"</p>
                         <div class="mt-4 md:mt-6 flex items-center">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=А" alt="Аватар Анны К." class="w-full h-full object-cover"></div>
+                            <div class="img-container w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="/images/avatar1.jpg" alt="Аватар Анны К." class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'"></div>
                             <div class="ml-3 md:ml-4">
                                 <p class="font-bold text-white text-sm md:text-base">Анна К.</p>
                                 <p class="text-xs md:text-sm text-gray-500">Ученица</p>
                             </div>
                         </div>
                     </div>
-                    <!-- Отзыв 2 (выделенный) -->
+                    <!-- Отзыв 2 -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl transform lg:scale-105 lg:-translate-y-4 bg-white/10 border-purple-500/50">
-                         <p class="text-gray-300 text-sm md:text-base">"Это лучшее, что случалось с моим телом и самооценкой! Атмосфера на занятиях просто волшебная — полная поддержка и никакой критики. Каждую тренировку жду с нетерпением. Алина, ты лучшая!"</p>
+                        <p class="text-gray-300 text-sm md:text-base">"Это лучшее, что случалось с моим телом и самооценкой! Атмосфера на занятиях просто волшебная — полная поддержка и никакой критики. Каждую тренировку жду с нетерпением. Алина, ты лучшая!"</p>
                         <div class="mt-4 md:mt-6 flex items-center">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=М" alt="Аватар Марии В." class="w-full h-full object-cover"></div>
+                            <div class="img-container w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="/images/avatar2.jpg" alt="Аватар Марии В." class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'"></div>
                             <div class="ml-3 md:ml-4">
                                 <p class="font-bold text-white gradient-text text-sm md:text-base">Мария В.</p>
                                 <p class="text-xs md:text-sm text-gray-500">Ученица</p>
@@ -789,7 +567,7 @@
                     <div class="glass-card p-6 md:p-8 rounded-2xl">
                         <p class="text-gray-300 text-sm md:text-base">"Никогда бы не подумала, что смогу так двигаться. Стрип-пластика раскрыла во мне ту женственность, которую я прятала. Спасибо за то, что помогаешь нам становиться увереннее!"</p>
                         <div class="mt-4 md:mt-6 flex items-center">
-                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="https://placehold.co/100x100/333333/999999?text=Е" alt="Аватар Екатерины" class="w-full h-full object-cover"></div>
+                            <div class="img-container w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="/images/avatar3.jpg" alt="Аватар Екатерины" class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'"></div>
                             <div class="ml-3 md:ml-4">
                                 <p class="font-bold text-white text-sm md:text-base">Екатерина</p>
                                 <p class="text-xs md:text-sm text-gray-500">Ученица</p>
@@ -801,7 +579,7 @@
         </section>
 
         <!-- СЕКЦИЯ 8: КОНТАКТЫ -->
-        <section id="contact" class="py-12 md:py-20 bg-cover bg-center" style="background-image: url('IMG_2947.png');">
+        <section id="contact" class="py-12 md:py-20 bg-cover bg-center" style="background-image: url('/images/contact.jpg');">
             <div class="container mx-auto px-4 md:px-6 text-center relative z-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white">Готова начать?</h2>
                 <p class="mt-2 md:mt-4 max-w-xl mx-auto text-gray-300 text-sm md:text-lg">
@@ -809,27 +587,17 @@
                 </p>
                 <div class="mt-8 md:mt-12 flex flex-wrap justify-center gap-4 md:gap-6">
                     <!-- Telegram -->
-                    <a href="https://t.me/your_telegram_username" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-gray-800 rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
+                    <a href="https://t.me/your_telegram_username" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#0088cc] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.58c-.28 1.13-1.04 1.4-1.74.88l-4.98-3.6-2.32 2.23c-.25.24-.47.45-.85.45z"/></svg>
                     </a>
                     <!-- Instagram -->
-                    <a href="https://instagram.com/your_instagram_username" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-gray-800 rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
+                    <a href="https://instagram.com/your_instagram_username" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#E4405F] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85C2.165 3.854 3.704 2.31 6.958 2.163 8.223 2.105 8.603 2.093 12 2.093m0-2.093c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.059 1.689.073 4.948.073s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
                     </a>
-                     <!-- WhatsApp -->
-                    <a href="https://wa.me/your_phone_number" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-gray-800 rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
-                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.894 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.89-5.451 0-9.887 4.434-9.889 9.884-.001 2.225.651 4.315 1.731 6.086l.001.004 4.971 3.688.243.028z"/></svg>
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/your_phone_number" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#25D366] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
+                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.864 3.49"/></svg>
                     </a>
-                </div>
-                <!-- Форма обратной связи -->
-                <div class="mt-12 glass-card p-6 md:p-8 rounded-2xl max-w-xl mx-auto">
-                    <h3 class="font-bold text-2xl md:text-3xl text-white text-center">Форма обратной связи</h3>
-                    <form action="https://formspree.io/f/your_form_id" method="POST" class="mt-4 space-y-4">
-                        <input type="text" name="name" placeholder="Ваше имя" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
-                        <input type="email" name="email" placeholder="Ваш email" class="w-full p-3 bg-gray-800 rounded-lg text-white" required>
-                        <textarea name="message" placeholder="Ваше сообщение" class="w-full p-3 bg-gray-800 rounded-lg text-white h-32" required></textarea>
-                        <button type="submit" class="w-full bg-gradient-to-r from-[#be38f5] to-[#ff3b8d] text-white font-bold py-3 rounded-lg hover:shadow-lg transition-all duration-300">Отправить</button>
-                    </form>
                 </div>
             </div>
         </section>
@@ -843,14 +611,66 @@
         </div>
     </footer>
 
-    <!-- Скрипт для мобильного меню с оптимизацией -->
+    <!-- Скрипт для мобильного меню и оптимизации -->
     <script>
-        // Оптимизированный обработчик меню
+        // Проверяем производительность устройства
+        function checkPerformance() {
+            const isLowPerformance = 
+                window.matchMedia('(max-resolution: 60dpi)').matches || 
+                /iPhone|iPad|iPod/i.test(navigator.userAgent) && !window.matchMedia('(min-resolution: 120dpi)').matches;
+            
+            if (isLowPerformance) {
+                document.documentElement.classList.add('low-performance');
+                document.documentElement.classList.add('no-animation');
+                document.documentElement.classList.add('simplified-effects');
+            }
+            
+            // Оптимизация скролла
+            const smoothLinks = document.querySelectorAll('a[href^="#"]');
+            for (let smoothLink of smoothLinks) {
+                smoothLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (isLowPerformance || window.innerWidth < 768) {
+                        targetElement.scrollIntoView({ behavior: 'auto' });
+                    } else {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    
+                    // Закрываем мобильное меню если открыто
+                    const mobileMenu = document.getElementById('mobile-menu');
+                    if (mobileMenu.classList.contains('active')) {
+                        mobileMenu.classList.remove('active');
+                        document.getElementById('menu-toggle').classList.remove('active');
+                    }
+                });
+            }
+        }
+        
+        // Запускаем при загрузке
         document.addEventListener('DOMContentLoaded', function() {
+            checkPerformance();
+
+            // Кнопка наверх
+            window.addEventListener('scroll', () => {
+                const backToTop = document.getElementById('backToTop');
+                if (window.scrollY > 300) {
+                    backToTop.classList.add('visible');
+                } else {
+                    backToTop.classList.remove('visible');
+                }
+            });
+
+            document.getElementById('backToTop').addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Оптимизированный обработчик меню
             const menuToggle = document.getElementById('menu-toggle');
             const mobileMenu = document.getElementById('mobile-menu');
             
-            // Делаем обработчик максимально легким
             function toggleMenu() {
                 if (mobileMenu.classList.contains('active')) {
                     mobileMenu.classList.remove('active');
@@ -861,7 +681,6 @@
                 }
             }
             
-            // Дебаунс для избежания множественных срабатываний
             let lastTapTime = 0;
             menuToggle.addEventListener('click', function(e) {
                 const currentTime = new Date().getTime();
@@ -874,78 +693,25 @@
                 lastTapTime = currentTime;
             });
             
-            // Закрытие меню при клике снаружи
             document.addEventListener('click', function(e) {
                 if (!e.target.closest('#mobile-menu') && !e.target.closest('#menu-toggle') && mobileMenu.classList.contains('active')) {
                     toggleMenu();
                 }
             });
-        });
-        
-        // Оптимизация загрузки изображений
-        function lazyLoadImages() {
-            const images = document.querySelectorAll('img[data-src]');
-            const config = {
-                rootMargin: '50px 0px',
-                threshold: 0.01
-            };
-            
-            if ('IntersectionObserver' in window) {
-                const observer = new IntersectionObserver(function(entries, self) {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const img = entry.target;
-                            img.src = img.dataset.src;
-                            img.removeAttribute('data-src');
-                            self.unobserve(img);
-                        }
-                    });
-                }, config);
-                
-                images.forEach(img => {
-                    observer.observe(img);
-                });
-            } else {
-                // Fallback для старых браузеров
-                images.forEach(img => {
-                    img.src = img.dataset.src;
-                });
-            }
-        }
-        
-        // Запускаем после полной загрузки страницы
-        window.addEventListener('load', function() {
-            lazyLoadImages();
-            document.getElementById('preloader').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('preloader').style.display = 'none';
-            }, 500);
+
+            // Обработка ошибок изображений
+            document.querySelectorAll('img').forEach(img => {
+                img.onerror = () => {
+                    img.src = '/images/fallback.jpg';
+                    img.classList.add('fallback-img');
+                };
+                // Проверка, загружено ли изображение
+                if (!img.complete || img.naturalWidth === 0) {
+                    img.src = '/images/fallback.jpg';
+                    img.classList.add('fallback-img');
+                }
+            });
         });
     </script>
-
-    <!-- Пример Service Worker для кэширования (sw.js) - создайте отдельный файл sw.js с содержимым ниже -->
-    <!-- 
-    self.addEventListener('install', (e) => {
-      e.waitUntil(
-        caches.open('cache-v1').then((cache) => {
-          return cache.addAll([
-            '/',
-            '/IMG_2945.png',
-            '/IMG_2944.png',
-            '/IMG_2947.png',
-            // Добавьте другие ресурсы
-          ]);
-        })
-      );
-    });
-
-    self.addEventListener('fetch', (e) => {
-      e.respondWith(
-        caches.match(e.request).then((response) => {
-          return response || fetch(e.request);
-        })
-      );
-    });
-    -->
 </body>
 </html>
