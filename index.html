@@ -213,6 +213,11 @@
             pointer-events: none;
         }
 
+        .video-preview:hover .play-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
         .play-button, .pause-button {
             width: 60px;
             height: 60px;
@@ -647,7 +652,7 @@
         <section id="about" class="py-12 md:py-20">
             <div class="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div class="img-container w-full h-auto rounded-2xl overflow-hidden shadow-2xl transform md:rotate-[-3deg] will-change-transform">
-                    <img src="/images/about.jpg" alt="Фото преподавателя Алины Бабаевой" class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'">
+                    <img src="/images/about.jpg" alt="Фото преподавателя Алины Бабаевой" loading="eager" class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'">
                 </div>
                 <div class="md:pr-4 lg:pr-10">
                     <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight">Привет, я — <span class="gradient-text">Алина!</span></h2>
