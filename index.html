@@ -151,7 +151,7 @@
         
         /* Отключаем анимации для отсутствующих изображений */
         .img-container img:not([src]),
-        .img-container img[src=""], 
+        .img-container img[src=""],
         .img-container img[src="/images/fallback.jpg"] {
             transform: none !important;
             transition: none !important;
@@ -262,7 +262,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: #0088cc; /* Телеграм цвет */
+            background: #0088cc;
             color: white;
             display: flex;
             align-items: center;
@@ -336,7 +336,7 @@
 
             /* Улучшение responsivity для изображений */
             .img-container img {
-                object-fit: contain;
+                object-fit: cover;
             }
 
             .play-button, .pause-button {
@@ -401,6 +401,12 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Анимация для иконок */
+        .icon-container:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
+        }
     </style>
     
     <!-- Schema.org разметка -->
@@ -436,7 +442,7 @@
 
     <!-- Кнопка "Наверх" -->
     <div class="back-to-top" id="backToTop">
-        <svg xmlns="https://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
     </div>
@@ -536,26 +542,32 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-white">Что тебя ждёт на занятиях?</h2>
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Мы не просто учим движения, мы создаем новую тебя.</p>
                 <div class="mt-8 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-8">
-                    <!-- Карточка 1 -->
+                    <!-- Карточка 1: Техника и пластика -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
-                           <svg xmlns="https://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.247-8.991l10.494 4.498-10.494 4.498V3.255l10.494 4.498z"/></svg>
+                        <div class="icon-container w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 2s-3 4-3 7c0 2.5 1.5 4.5 4 5.5 2.5 1 5 1 7 0 2-1 3-3 3-5.5 0-3-3-7-3-7s-3 4-5 4-3-4-3-4z"/>
+                            </svg>
                         </div>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Техника и пластика</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Изучим базовые элементы, волны, прогибы и работу с полом. Твоё тело станет более гибким и послушным.</p>
                     </div>
-                    <!-- Карточка 2 -->
+                    <!-- Карточка 2: Любовь к себе -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
-                           <svg xmlns="https://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                        <div class="icon-container w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
                         </div>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Любовь к себе</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Через танец ты научишься принимать и любить себя, станешь увереннее и раскроешь свою природную грацию.</p>
                     </div>
-                    <!-- Карточка 3 -->
+                    <!-- Карточка 3: Эмоциональная разрядка -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
-                            <svg xmlns="https://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7.014A8.003 8.003 0 0122 12c0 3-1 7-6.343 6.657z" /></svg>
+                        <div class="icon-container w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path d="M12 2.5l2.5 5.5 6 .5-4.5 4.5.5 6-5-3-5 3 .5-6-4.5-4.5 6-.5 2.5-5.5z"/>
+                            </svg>
                         </div>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Эмоциональная разрядка</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Занятия помогают сбросить стресс, избавиться от зажимов и зарядиться потрясающей энергией.</p>
@@ -604,10 +616,42 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-white">Атмосфера наших занятий</h2>
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Здесь слова не нужны. Просто почувствуй эту энергию.</p>
                 <div class="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/group1.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 1" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/group2.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 2" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/group3.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 3" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/group4.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 4" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden">
+                        <img src="/images/group1.jpg" 
+                             srcset="/images/group1.jpg 480w, /images/group1.jpg 800w" 
+                             sizes="(max-width: 768px) 480px, 800px" 
+                             class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
+                             alt="Фото с занятия 1" 
+                             loading="lazy" 
+                             onerror="this.src='/images/fallback.jpg'">
+                    </div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8">
+                        <img src="/images/group2.jpg" 
+                             srcset="/images/group2.jpg 480w, /images/group2.jpg 800w" 
+                             sizes="(max-width: 768px) 480px, 800px" 
+                             class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
+                             alt="Фото с занятия 2" 
+                             loading="lazy" 
+                             onerror="this.src='/images/fallback.jpg'">
+                    </div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden">
+                        <img src="/images/group3.jpg" 
+                             srcset="/images/group3.jpg 480w, /images/group3.jpg 800w" 
+                             sizes="(max-width: 768px) 480px, 800px" 
+                             class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
+                             alt="Фото с занятия 3" 
+                             loading="lazy" 
+                             onerror="this.src='/images/fallback.jpg'">
+                    </div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8">
+                        <img src="/images/group4.jpg" 
+                             srcset="/images/group4.jpg 480w, /images/group4.jpg 800w" 
+                             sizes="(max-width: 768px) 480px, 800px" 
+                             class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
+                             alt="Фото с занятия 4" 
+                             loading="lazy" 
+                             onerror="this.src='/images/fallback.jpg'">
+                    </div>
                 </div>
             </div>
         </section>
@@ -816,7 +860,7 @@
                 }
             });
 
-            // Обработка ошибок изображений
+            // Обработка ошибок изображений и принудительная перезагрузка
             document.querySelectorAll('img').forEach(img => {
                 img.onerror = () => {
                     img.src = '/images/fallback.jpg';
@@ -827,29 +871,64 @@
                     img.src = '/images/fallback.jpg';
                     img.classList.add('fallback-img');
                 }
+                // Принудительная перезагрузка через 2 секунды, если изображение не загрузилось
+                setTimeout(() => {
+                    if (!img.complete || img.naturalWidth === 0) {
+                        img.src = img.src; // Повторная попытка загрузки
+                    }
+                }, 2000);
             });
+
+            // Ленивая загрузка изображений с IntersectionObserver
+            if ('IntersectionObserver' in window) {
+                const imageObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            if (img.src !== '/images/fallback.jpg' && (!img.complete || img.naturalWidth === 0)) {
+                                img.src = img.src; // Повторная попытка загрузки
+                            }
+                            observer.unobserve(img);
+                        }
+                    });
+                }, { rootMargin: '100px' });
+
+                document.querySelectorAll('.img-container img').forEach(img => {
+                    imageObserver.observe(img);
+                });
+            }
 
             // Обработка видео: автозапуск по клику на оверлей
             document.querySelectorAll('.video-preview').forEach(preview => {
                 const video = preview.querySelector('video');
                 const overlay = preview.querySelector('.play-overlay');
+                const playBtn = preview.querySelector('.play-button');
+                const pauseBtn = preview.querySelector('.pause-button');
 
                 overlay.addEventListener('click', () => {
                     if (video.paused) {
                         video.play();
                         preview.classList.add('playing');
+                        playBtn.style.display = 'none';
+                        pauseBtn.style.display = 'flex';
                     } else {
                         video.pause();
                         preview.classList.remove('playing');
+                        playBtn.style.display = 'flex';
+                        pauseBtn.style.display = 'none';
                     }
                 });
 
                 video.addEventListener('play', () => {
                     preview.classList.add('playing');
+                    playBtn.style.display = 'none';
+                    pauseBtn.style.display = 'flex';
                 });
 
                 video.addEventListener('pause', () => {
                     preview.classList.remove('playing');
+                    playBtn.style.display = 'flex';
+                    pauseBtn.style.display = 'none';
                 });
             });
 
@@ -861,7 +940,7 @@
                     setTimeout(() => {
                         preloader.style.display = 'none';
                     }, 500); // Время анимации fade out
-                }, 500); // Короткая задержка для красоты
+                }, /Mobi|Android/i.test(navigator.userAgent) ? 1000 : 500); // Больше времени для мобильных
             });
         });
     </script>
