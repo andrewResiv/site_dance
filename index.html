@@ -36,10 +36,11 @@
     <link rel="preload" href="/images/about.jpg" as="image">
     <link rel="preload" href="/images/contact.jpg" as="image">
     <link rel="preload" href="/images/fallback.jpg" as="image">
+    <link rel="preload" href="/images/group.jpg" as="image">
     <link rel="preload" href="/images/group1.jpg" as="image">
-    <link rel="preload" href="/images/group2.jpg" as="image">
-    <link rel="preload" href="/images/group3.jpg" as="image">
-    <link rel="preload" href="/images/group4.jpg" as="image">
+    <link rel="preload" href="/images/technique.jpg" as="image">
+    <link rel="preload" href="/images/love.jpg" as="image">
+    <link rel="preload" href="/images/energy.jpg" as="image">
 
     <style>
         /* Базовые стили */
@@ -402,10 +403,91 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Анимация для иконок */
-        .icon-container:hover {
-            transform: scale(1.1);
-            transition: transform 0.2s ease;
+        /* Стили для модального окна галереи */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .gallery-modal.active {
+            display: flex;
+        }
+
+        .gallery-modal img {
+            max-width: 90%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(190, 56, 245, 0.5);
+        }
+
+        .gallery-modal .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #be38f5, #ff3b8d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .gallery-modal .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #be38f5, #ff3b8d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .gallery-modal .nav-btn:hover {
+            opacity: 1;
+        }
+
+        .gallery-modal .prev-btn {
+            left: 20px;
+        }
+
+        .gallery-modal .next-btn {
+            right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-modal img {
+                max-width: 100%;
+                max-height: 80vh;
+            }
+
+            .gallery-modal .close-btn {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+            }
+
+            .gallery-modal .nav-btn {
+                width: 40px;
+                height: 40px;
+            }
         }
     </style>
     
@@ -445,6 +527,26 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="18 15 12 9 6 15"></polyline>
         </svg>
+    </div>
+
+    <!-- Модальное окно для галереи -->
+    <div class="gallery-modal" id="galleryModal">
+        <div class="close-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div class="nav-btn prev-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                <path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <div class="nav-btn next-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+        <img id="modalImage" src="" alt="Галерея">
     </div>
 
     <!-- НАВИГАЦИЯ -->
@@ -544,30 +646,42 @@
                 <div class="mt-8 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-8">
                     <!-- Карточка 1: Техника и пластика -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="icon-container w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2s-3 4-3 7c0 2.5 1.5 4.5 4 5.5 2.5 1 5 1 7 0 2-1 3-3 3-5.5 0-3-3-7-3-7s-3 4-5 4-3-4-3-4z"/>
-                            </svg>
+                        <div class="img-container w-12 h-12 md:w-16 md:h-16 rounded-xl overflow-hidden">
+                            <img src="/images/technique.jpg" 
+                                 srcset="/images/technique-mobile.jpg 480w, /images/technique.jpg 800w" 
+                                 sizes="(max-width: 768px) 480px, 800px" 
+                                 class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
+                                 alt="Техника и пластика" 
+                                 loading="lazy" 
+                                 onerror="this.src='/images/fallback.jpg'">
                         </div>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Техника и пластика</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Изучим базовые элементы, волны, прогибы и работу с полом. Твоё тело станет более гибким и послушным.</p>
                     </div>
                     <!-- Карточка 2: Любовь к себе -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="icon-container w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                            </svg>
+                        <div class="img-container w-12 h-12 md:w-16 md:h-16 rounded-xl overflow-hidden">
+                            <img src="/images/love.jpg" 
+                                 srcset="/images/love-mobile.jpg 480w, /images/love.jpg 800w" 
+                                 sizes="(max-width: 768px) 480px, 800px" 
+                                 class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
+                                 alt="Любовь к себе" 
+                                 loading="lazy" 
+                                 onerror="this.src='/images/fallback.jpg'">
                         </div>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Любовь к себе</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Через танец ты научишься принимать и любить себя, станешь увереннее и раскроешь свою природную грацию.</p>
                     </div>
                     <!-- Карточка 3: Эмоциональная разрядка -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="icon-container w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 md:h-10 md:w-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                                <path d="M12 2.5l2.5 5.5 6 .5-4.5 4.5.5 6-5-3-5 3 .5-6-4.5-4.5 6-.5 2.5-5.5z"/>
-                            </svg>
+                        <div class="img-container w-12 h-12 md:w-16 md:h-16 rounded-xl overflow-hidden">
+                            <img src="/images/energy.jpg" 
+                                 srcset="/images/energy-mobile.jpg 480w, /images/energy.jpg 800w" 
+                                 sizes="(max-width: 768px) 480px, 800px" 
+                                 class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
+                                 alt="Эмоциональная разрядка" 
+                                 loading="lazy" 
+                                 onerror="this.src='/images/fallback.jpg'">
                         </div>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Эмоциональная разрядка</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Занятия помогают сбросить стресс, избавиться от зажимов и зарядиться потрясающей энергией.</p>
@@ -616,36 +730,36 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-white">Атмосфера наших занятий</h2>
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Здесь слова не нужны. Просто почувствуй эту энергию.</p>
                 <div class="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden">
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group1.jpg" data-srcset="/images/group1-mobile.jpg 480w, /images/group1.jpg 800w">
                         <img src="/images/group1.jpg" 
-                             srcset="/images/group1.jpg 480w, /images/group1.jpg 800w" 
+                             srcset="/images/group1-mobile.jpg 480w, /images/group1.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 1" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8">
-                        <img src="/images/group2.jpg" 
-                             srcset="/images/group2.jpg 480w, /images/group2.jpg 800w" 
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group.jpg" data-srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w">
+                        <img src="/images/group.jpg" 
+                             srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 2" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden">
-                        <img src="/images/group3.jpg" 
-                             srcset="/images/group3.jpg 480w, /images/group3.jpg 800w" 
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group.jpg" data-srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w">
+                        <img src="/images/group.jpg" 
+                             srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 3" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8">
-                        <img src="/images/group4.jpg" 
-                             srcset="/images/group4.jpg 480w, /images/group4.jpg 800w" 
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group.jpg" data-srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w">
+                        <img src="/images/group.jpg" 
+                             srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 4" 
@@ -749,7 +863,7 @@
                 <div class="mt-8 md:mt-12 flex flex-wrap justify-center gap-4 md:gap-6">
                     <!-- Telegram -->
                     <a href="https://t.me/lilijall" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#0088cc] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
-                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.58c-.28 1.13-1.04 1.4-1.74.88l-4.98-3.6-2.32 2.23c-.25.24-.47.45-.85.45z"/></svg>
+                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68ഗ.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.58c-.28 1.13-1.04 1.4-1.74.88l-4.98-3.6-2.32 2.23c-.25.24-.47.45-.85.45z"/></svg>
                     </a>
                     <!-- Instagram -->
                     <a href="https://www.instagram.com/lilijall/" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#E4405F] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
@@ -772,7 +886,7 @@
         </div>
     </footer>
 
-    <!-- Скрипт для мобильного меню, прелоадера и оптимизации -->
+    <!-- Скрипт для мобильного меню, прелоадера, оптимизации и галереи -->
     <script>
         // Проверяем производительность устройства
         function checkPerformance() {
@@ -898,7 +1012,7 @@
                 });
             }
 
-            // Обработка видео: автозапуск по клику на оверлей
+            // Обработка видео
             document.querySelectorAll('.video-preview').forEach(preview => {
                 const video = preview.querySelector('video');
                 const overlay = preview.querySelector('.play-overlay');
@@ -930,6 +1044,70 @@
                     playBtn.style.display = 'flex';
                     pauseBtn.style.display = 'none';
                 });
+            });
+
+            // Обработка галереи
+            const galleryModal = document.getElementById('galleryModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeBtn = galleryModal.querySelector('.close-btn');
+            const prevBtn = galleryModal.querySelector('.prev-btn');
+            const nextBtn = galleryModal.querySelector('.next-btn');
+            const galleryImages = document.querySelectorAll('.img-container');
+            let currentImageIndex = 0;
+
+            function openModal(index) {
+                currentImageIndex = index;
+                const imgContainer = galleryImages[index];
+                modalImage.src = imgContainer.dataset.src;
+                modalImage.srcset = imgContainer.dataset.srcset;
+                modalImage.sizes = imgContainer.querySelector('img').sizes;
+                galleryModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                galleryModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+
+            function showPrevImage() {
+                currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+                openModal(currentImageIndex);
+            }
+
+            function showNextImage() {
+                currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+                openModal(currentImageIndex);
+            }
+
+            galleryImages.forEach((container, index) => {
+                container.addEventListener('click', () => openModal(index));
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+            prevBtn.addEventListener('click', showPrevImage);
+            nextBtn.addEventListener('click', showNextImage);
+
+            // Поддержка клавиш
+            document.addEventListener('keydown', (e) => {
+                if (galleryModal.classList.contains('active')) {
+                    if (e.key === 'ArrowLeft') showPrevImage();
+                    if (e.key === 'ArrowRight') showNextImage();
+                    if (e.key === 'Escape') closeModal();
+                }
+            });
+
+            // Поддержка свайпов на мобильных
+            let touchStartX = 0;
+            galleryModal.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+
+            galleryModal.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].screenX;
+                const deltaX = touchEndX - touchStartX;
+                if (deltaX > 50) showPrevImage();
+                if (deltaX < -50) showNextImage();
             });
 
             // Скрываем прелоадер после загрузки страницы
