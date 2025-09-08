@@ -36,11 +36,10 @@
     <link rel="preload" href="/images/about.jpg" as="image">
     <link rel="preload" href="/images/contact.jpg" as="image">
     <link rel="preload" href="/images/fallback.jpg" as="image">
-    <link rel="preload" href="/images/group.jpg" as="image">
     <link rel="preload" href="/images/group1.jpg" as="image">
-    <link rel="preload" href="/images/technique.jpg" as="image">
-    <link rel="preload" href="/images/love.jpg" as="image">
-    <link rel="preload" href="/images/energy.jpg" as="image">
+    <link rel="preload" href="/images/group2.jpg" as="image">
+    <link rel="preload" href="/images/group3.jpg" as="image">
+    <link rel="preload" href="/images/group4.jpg" as="image">
 
     <style>
         /* Базовые стили */
@@ -59,6 +58,18 @@
             font-weight: 700;
         }
         
+        /* Прогресс-бар */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #be38f5, #ff3b8d);
+            width: 0;
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+        
         /* Оптимизация для 60 Гц устройств */
         @media (max-resolution: 60dpi), (max-width: 768px) {
             .no-animation {
@@ -71,6 +82,10 @@
                 backdrop-filter: none !important;
                 filter: none !important;
                 perspective: none !important;
+            }
+
+            #progress-bar {
+                height: 3px;
             }
         }
         
@@ -87,6 +102,7 @@
         .glass-card {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
         
         @supports (backdrop-filter: blur(10px)) {
@@ -94,6 +110,19 @@
                 backdrop-filter: blur(10px);
                 background: rgba(255, 255, 255, 0.03);
             }
+        }
+        
+        /* Треугольный акцент для карточек */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 0;
+            height: 0;
+            border-top: 40px solid transparent;
+            border-left: 40px solid #be38f5;
+            opacity: 0.3;
         }
         
         /* Адаптивные размеры текста */
@@ -489,6 +518,24 @@
                 height: 40px;
             }
         }
+
+        /* Стили для SVG иконок */
+        .svg-icon {
+            width: 48px;
+            height: 48px;
+            fill: none;
+            stroke: url(#gradient);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        @media (min-width: 768px) {
+            .svg-icon {
+                width: 64px;
+                height: 64px;
+            }
+        }
     </style>
     
     <!-- Schema.org разметка -->
@@ -510,6 +557,9 @@
     </script>
 </head>
 <body class="bg-[#101010] text-gray-200">
+    <!-- Прогресс-бар -->
+    <div id="progress-bar"></div>
+
     <!-- Прелоадер -->
     <div id="preloader">
         <div class="loader"></div>
@@ -517,7 +567,7 @@
 
     <!-- Telegram виджет -->
     <a href="https://t.me/lilijall" target="_blank" class="telegram-widget">
-        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 0C5.372 0 0 5.373 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.627-5.372-12-12-12zm5.497 8.218l-1.88 8.86c-.142.626-.514.779-1.04.484l-2.88-2.123-1.389 1.338c-.154.154-.283.283-.579.283l.207-2.923 5.329-4.812c.231-.207-.05-.322-.358-.115l-6.585 4.144-2.839-.887c-.617-.192-.632-.617.128-.911l11.076-4.272c.514-.192.963.115.799.911z"/>
         </svg>
     </a>
@@ -646,43 +696,43 @@
                 <div class="mt-8 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-8">
                     <!-- Карточка 1: Техника и пластика -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="img-container w-12 h-12 md:w-16 md:h-16 rounded-xl overflow-hidden">
-                            <img src="/images/technique.jpg" 
-                                 srcset="/images/technique-mobile.jpg 480w, /images/technique.jpg 800w" 
-                                 sizes="(max-width: 768px) 480px, 800px" 
-                                 class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
-                                 alt="Техника и пластика" 
-                                 loading="lazy" 
-                                 onerror="this.src='/images/fallback.jpg'">
-                        </div>
+                        <svg class="svg-icon" viewBox="0 0 24 24">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#be38f5;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#ff3b8d;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M12 4s-2 3-4 6c-2 3 0 6 2 7s3-1 4-3 2-4 2-6-2-4-4-4z"/>
+                        </svg>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Техника и пластика</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Изучим базовые элементы, волны, прогибы и работу с полом. Твоё тело станет более гибким и послушным.</p>
                     </div>
                     <!-- Карточка 2: Любовь к себе -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="img-container w-12 h-12 md:w-16 md:h-16 rounded-xl overflow-hidden">
-                            <img src="/images/love.jpg" 
-                                 srcset="/images/love-mobile.jpg 480w, /images/love.jpg 800w" 
-                                 sizes="(max-width: 768px) 480px, 800px" 
-                                 class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
-                                 alt="Любовь к себе" 
-                                 loading="lazy" 
-                                 onerror="this.src='/images/fallback.jpg'">
-                        </div>
+                        <svg class="svg-icon" viewBox="0 0 24 24">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#be38f5;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#ff3b8d;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                        </svg>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Любовь к себе</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Через танец ты научишься принимать и любить себя, станешь увереннее и раскроешь свою природную грацию.</p>
                     </div>
                     <!-- Карточка 3: Эмоциональная разрядка -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="img-container w-12 h-12 md:w-16 md:h-16 rounded-xl overflow-hidden">
-                            <img src="/images/energy.jpg" 
-                                 srcset="/images/energy-mobile.jpg 480w, /images/energy.jpg 800w" 
-                                 sizes="(max-width: 768px) 480px, 800px" 
-                                 class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
-                                 alt="Эмоциональная разрядка" 
-                                 loading="lazy" 
-                                 onerror="this.src='/images/fallback.jpg'">
-                        </div>
+                        <svg class="svg-icon" viewBox="0 0 24 24">
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#be38f5;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#ff3b8d;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Эмоциональная разрядка</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Занятия помогают сбросить стресс, избавиться от зажимов и зарядиться потрясающей энергией.</p>
                     </div>
@@ -730,36 +780,36 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-white">Атмосфера наших занятий</h2>
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Здесь слова не нужны. Просто почувствуй эту энергию.</p>
                 <div class="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group1.jpg" data-srcset="/images/group1-mobile.jpg 480w, /images/group1.jpg 800w">
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group1.jpg" data-srcset="/images/group1.jpg 480w, /images/group1.jpg 800w">
                         <img src="/images/group1.jpg" 
-                             srcset="/images/group1-mobile.jpg 480w, /images/group1.jpg 800w" 
+                             srcset="/images/group1.jpg 480w, /images/group1.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 1" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group.jpg" data-srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w">
-                        <img src="/images/group.jpg" 
-                             srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w" 
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group2.jpg" data-srcset="/images/group2.jpg 480w, /images/group2.jpg 800w">
+                        <img src="/images/group2.jpg" 
+                             srcset="/images/group2.jpg 480w, /images/group2.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 2" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group.jpg" data-srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w">
-                        <img src="/images/group.jpg" 
-                             srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w" 
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group3.jpg" data-srcset="/images/group3.jpg 480w, /images/group3.jpg 800w">
+                        <img src="/images/group3.jpg" 
+                             srcset="/images/group3.jpg 480w, /images/group3.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 3" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group.jpg" data-srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w">
-                        <img src="/images/group.jpg" 
-                             srcset="/images/group-mobile.jpg 480w, /images/group.jpg 800w" 
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group4.jpg" data-srcset="/images/group4.jpg 480w, /images/group4.jpg 800w">
+                        <img src="/images/group4.jpg" 
+                             srcset="/images/group4.jpg 480w, /images/group4.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 4" 
@@ -862,16 +912,22 @@
                 </p>
                 <div class="mt-8 md:mt-12 flex flex-wrap justify-center gap-4 md:gap-6">
                     <!-- Telegram -->
-                    <a href="https://t.me/lilijall" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#0088cc] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
-                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68ഗ.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.58c-.28 1.13-1.04 1.4-1.74.88l-4.98-3.6-2.32 2.23c-.25.24-.47.45-.85.45z"/></svg>
+                    <a href="https://t.me/lilijall" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#0088cc] rounded-full flex items-center justify-center text-white transform hover:scale-110 transition-all duration-300">
+                        <svg class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 0C5.372 0 0 5.373 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.627-5.372-12-12-12zm5.497 8.218l-1.88 8.86c-.142.626-.514.779-1.04.484l-2.88-2.123-1.389 1.338c-.154.154-.283.283-.579.283l.207-2.923 5.329-4.812c.231-.207-.05-.322-.358-.115l-6.585 4.144-2.839-.887c-.617-.192-.632-.617.128-.911l11.076-4.272c.514-.192.963.115.799.911z"/>
+                        </svg>
                     </a>
                     <!-- Instagram -->
                     <a href="https://www.instagram.com/lilijall/" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#E4405F] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
-                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85C2.165 3.854 3.704 2.31 6.958 2.163 8.223 2.105 8.603 2.093 12 2.093m0-2.093c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.059 1.689.073 4.948.073s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
+                        <svg class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85C2.165 3.854 3.704 2.31 6.958 2.163 8.223 2.105 8.603 2.093 12 2.093m0-2.093c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.059 1.689.073 4.948.073s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/>
+                        </svg>
                     </a>
                     <!-- WhatsApp -->
                     <a href="https://wa.me/your_phone_number" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#25D366] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
-                        <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.864 3.49"/></svg>
+                        <svg class="w-10 h-10 md:w-12 md:h-12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.864 3.49"/>
+                        </svg>
                     </a>
                 </div>
             </div>
@@ -886,7 +942,7 @@
         </div>
     </footer>
 
-    <!-- Скрипт для мобильного меню, прелоадера, оптимизации и галереи -->
+    <!-- Скрипт для мобильного меню, прелоадера, оптимизации, галереи и прогресс-бара -->
     <script>
         // Проверяем производительность устройства
         function checkPerformance() {
@@ -927,6 +983,14 @@
         // Запускаем при загрузке
         document.addEventListener('DOMContentLoaded', function() {
             checkPerformance();
+
+            // Прогресс-бар
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                document.getElementById('progress-bar').style.width = scrollPercent + '%';
+            });
 
             // Кнопка наверх
             window.addEventListener('scroll', () => {
@@ -1097,30 +1161,48 @@
                 }
             });
 
-            // Поддержка свайпов на мобильных
+            // Поддержка свайпов на мобиль
             let touchStartX = 0;
+            let touchEndX = 0;
+
             galleryModal.addEventListener('touchstart', (e) => {
                 touchStartX = e.changedTouches[0].screenX;
             });
 
             galleryModal.addEventListener('touchend', (e) => {
-                const touchEndX = e.changedTouches[0].screenX;
-                const deltaX = touchEndX - touchStartX;
-                if (deltaX > 50) showPrevImage();
-                if (deltaX < -50) showNextImage();
+                touchEndX = e.changedTouches[0].screenX;
+                const swipeDistance = touchEndX - touchStartX;
+                if (swipeDistance > 50) {
+                    showPrevImage();
+                } else if (swipeDistance < -50) {
+                    showNextImage();
+                }
             });
 
-            // Скрываем прелоадер после загрузки страницы
+            // Прелоадер
+            const preloader = document.getElementById('preloader');
             window.addEventListener('load', () => {
+                preloader.classList.add('hidden');
                 setTimeout(() => {
-                    const preloader = document.getElementById('preloader');
-                    preloader.classList.add('hidden');
-                    setTimeout(() => {
-                        preloader.style.display = 'none';
-                    }, 500); // Время анимации fade out
-                }, /Mobi|Android/i.test(navigator.userAgent) ? 1000 : 500); // Больше времени для мобильных
+                    preloader.style.display = 'none';
+                }, 500);
             });
+
+            // Проверка загрузки изображений в галерее
+            galleryImages.forEach(img => {
+                if (img.querySelector('img').complete && img.querySelector('img').naturalWidth !== 0) {
+                    img.classList.add('loaded');
+                }
+            });
+
+            // Оптимизация для слабых устройств
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.documentElement.classList.add('no-animation');
+            }
         });
+
+        // Динамическое обновление года в футере
+        document.querySelector('footer p').innerHTML = `&copy; ${new Date().getFullYear()} Алина Бабаева. Все права защищены.`;
     </script>
 </body>
 </html>
