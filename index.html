@@ -31,7 +31,7 @@
     <!-- Иконка сайта -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💃</text></svg>">
     
-    <!-- Preload основных ресурсов (без видео для ускорения) -->
+    <!-- Preload основных ресурсов -->
     <link rel="preload" href="/images/hero.jpg" as="image">
     <link rel="preload" href="/images/about.jpg" as="image">
     <link rel="preload" href="/images/contact.jpg" as="image">
@@ -40,8 +40,6 @@
     <link rel="preload" href="/images/group2.jpg" as="image">
     <link rel="preload" href="/images/group3.jpg" as="image">
     <link rel="preload" href="/images/group4.jpg" as="image">
-    <link rel="preload" href="/images/video-poster1.jpg" as="image">
-    <link rel="preload" href="/images/video-poster2.jpg" as="image">
 
     <style>
         /* Базовые стили */
@@ -153,7 +151,7 @@
         
         /* Отключаем анимации для отсутствующих изображений */
         .img-container img:not([src]),
-        .img-container img[src=""],
+        .img-container img[src=""], 
         .img-container img[src="/images/fallback.jpg"] {
             transform: none !important;
             transition: none !important;
@@ -264,7 +262,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: #0088cc;
+            background: #0088cc; /* Телеграм цвет */
             color: white;
             display: flex;
             align-items: center;
@@ -540,7 +538,7 @@
                 <div class="mt-8 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-8">
                     <!-- Карточка 1 -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be36f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
+                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
                            <svg xmlns="https://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.247-8.991l10.494 4.498-10.494 4.498V3.255l10.494 4.498z"/></svg>
                         </div>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Техника и пластика</h3>
@@ -622,7 +620,7 @@
                 <div class="mt-8 md:mt-16 grid md:grid-cols-2 gap-4 md:gap-8">
                     <!-- Видео 1 -->
                     <div class="video-preview aspect-video">
-                        <video class="w-full h-full object-cover" poster="/images/video-poster1.jpg" preload="metadata" muted loop playsinline>
+                        <video class="w-full h-full object-cover" poster="/images/video-poster1.jpg" preload="metadata" loop playsinline>
                             <source src="/videos/video1.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -637,7 +635,7 @@
                     </div>
                     <!-- Видео 2 -->
                     <div class="video-preview aspect-video">
-                        <video class="w-full h-full object-cover" poster="/images/video-poster2.jpg" preload="metadata" muted loop playsinline>
+                        <video class="w-full h-full object-cover" poster="/images/video-poster2.jpg" preload="metadata" loop playsinline>
                             <source src="/videos/video2.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
@@ -831,48 +829,40 @@
                 }
             });
 
-            // Обработка видео: автозапуск и пауза по клику на оверлей
+            // Обработка видео: автозапуск по клику на оверлей
             document.querySelectorAll('.video-preview').forEach(preview => {
                 const video = preview.querySelector('video');
                 const overlay = preview.querySelector('.play-overlay');
-                const playBtn = preview.querySelector('.play-button');
-                const pauseBtn = preview.querySelector('.pause-button');
 
                 overlay.addEventListener('click', () => {
                     if (video.paused) {
                         video.play();
                         preview.classList.add('playing');
-                        playBtn.style.display = 'none';
-                        pauseBtn.style.display = 'flex';
                     } else {
                         video.pause();
                         preview.classList.remove('playing');
-                        playBtn.style.display = 'flex';
-                        pauseBtn.style.display = 'none';
                     }
                 });
 
                 video.addEventListener('play', () => {
                     preview.classList.add('playing');
-                    playBtn.style.display = 'none';
-                    pauseBtn.style.display = 'flex';
                 });
 
                 video.addEventListener('pause', () => {
                     preview.classList.remove('playing');
-                    playBtn.style.display = 'flex';
-                    pauseBtn.style.display = 'none';
                 });
             });
 
-            // Скрываем прелоадер после загрузки DOM (для ускорения на мобильных)
-            setTimeout(() => {
-                const preloader = document.getElementById('preloader');
-                preloader.classList.add('hidden');
+            // Скрываем прелоадер после загрузки страницы
+            window.addEventListener('load', () => {
                 setTimeout(() => {
-                    preloader.style.display = 'none';
-                }, 500); // Время анимации fade out
-            }, 500); // Короткая задержка для красоты
+                    const preloader = document.getElementById('preloader');
+                    preloader.classList.add('hidden');
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 500); // Время анимации fade out
+                }, 500); // Короткая задержка для красоты
+            });
         });
     </script>
 </body>
