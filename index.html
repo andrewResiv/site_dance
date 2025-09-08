@@ -690,7 +690,7 @@
                                     <stop offset="100%" style="stop-color:#ff3b8d;stop-opacity:1" />
                                 </linearGradient>
                             </defs>
-                            <path d="M12 4a2 2 0 00-2 2c0 .74.4 1.388 1 1.732V10h-3v2h3v2.268A2 2 0 0012 16a2 2 0 001-1.732V12h3v-2h-3V7.732A2 2 0 0014 6a2 2 0 00-2-2zm0 14a2 2 0 01-2-2v-2h-2v2a4 4 0 004 4 4 4 0 004-4v-2h-2v2a2 2 0 01-2 2z"/>
+                            <path d="M12 3a2 2 0 00-2 2c0 1.105.895 2 2 2s2-.895 2-2a2 2 0 00-2-2zm-4 7h8v2H8v-2zm2 4h4v6h-2v-4h-2v4z"/>
                         </svg>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Техника и пластика</h3>
                         <p class="text-gray-400 mt-1 md:mt-2 text-sm md:text-base">Изучим базовые элементы, волны, прогибы и работу с полом. Твоё тело станет более гибким и послушным.</p>
@@ -767,36 +767,36 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-white">Атмосфера наших занятий</h2>
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Здесь слова не нужны. Просто почувствуй эту энергию.</p>
                 <div class="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group1.jpg" data-srcset="/images/group1.jpg 480w, /images/group1.jpg 800w">
+                    <div class="img-container gallery-item h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group1.jpg" data-srcset="/images/group1-mobile.jpg 480w, /images/group1.jpg 800w">
                         <img src="/images/group1.jpg" 
-                             srcset="/images/group1.jpg 480w, /images/group1.jpg 800w" 
+                             srcset="/images/group1-mobile.jpg 480w, /images/group1.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 1" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group2.jpg" data-srcset="/images/group2.jpg 480w, /images/group2.jpg 800w">
+                    <div class="img-container gallery-item h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group2.jpg" data-srcset="/images/group2-mobile.jpg 480w, /images/group2.jpg 800w">
                         <img src="/images/group2.jpg" 
-                             srcset="/images/group2.jpg 480w, /images/group2.jpg 800w" 
+                             srcset="/images/group2-mobile.jpg 480w, /images/group2.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 2" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group3.jpg" data-srcset="/images/group3.jpg 480w, /images/group3.jpg 800w">
+                    <div class="img-container gallery-item h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer" data-src="/images/group3.jpg" data-srcset="/images/group3-mobile.jpg 480w, /images/group3.jpg 800w">
                         <img src="/images/group3.jpg" 
-                             srcset="/images/group3.jpg 480w, /images/group3.jpg 800w" 
+                             srcset="/images/group3-mobile.jpg 480w, /images/group3.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 3" 
                              loading="lazy" 
                              onerror="this.src='/images/fallback.jpg'">
                     </div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group4.jpg" data-srcset="/images/group4.jpg 480w, /images/group4.jpg 800w">
+                    <div class="img-container gallery-item h-40 md:h-64 rounded-xl overflow-hidden cursor-pointer md:translate-y-8" data-src="/images/group4.jpg" data-srcset="/images/group4-mobile.jpg 480w, /images/group4.jpg 800w">
                         <img src="/images/group4.jpg" 
-                             srcset="/images/group4.jpg 480w, /images/group4.jpg 800w" 
+                             srcset="/images/group4-mobile.jpg 480w, /images/group4.jpg 800w" 
                              sizes="(max-width: 768px) 480px, 800px" 
                              class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" 
                              alt="Фото с занятия 4" 
@@ -1103,7 +1103,7 @@
             const closeBtn = galleryModal.querySelector('.close-btn');
             const prevBtn = galleryModal.querySelector('.prev-btn');
             const nextBtn = galleryModal.querySelector('.next-btn');
-            const galleryImages = Array.from(document.querySelectorAll('.img-container')).filter(img => img.dataset.src !== '');
+            const galleryImages = Array.from(document.querySelectorAll('#gallery .img-container.gallery-item'));
             let currentImageIndex = 0;
 
             function openModal(index) {
