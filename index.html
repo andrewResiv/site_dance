@@ -36,6 +36,10 @@
     <link rel="preload" href="/images/about.jpg" as="image">
     <link rel="preload" href="/images/contact.jpg" as="image">
     <link rel="preload" href="/images/fallback.jpg" as="image">
+    <link rel="preload" href="/images/group.jpg" as="image">
+    <link rel="preload" href="/images/group1.jpg" as="image">
+    <link rel="preload" href="/videos/video1.mp4" as="video">
+    <link rel="preload" href="/videos/video2.mp4" as="video">
 
     <style>
         /* Базовые стили */
@@ -157,15 +161,57 @@
         .video-preview {
             position: relative;
             background-color: #1a1a1a;
+            border: 2px solid transparent;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(190, 56, 245, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .video-preview:hover {
+            border-color: #be38f5;
+            box-shadow: 0 4px 15px rgba(190, 56, 245, 0.5);
         }
         
-        .video-preview img {
+        .video-preview video {
             display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-        
+
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+            cursor: pointer;
+        }
+
+        .video-preview.playing .play-overlay {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #be38f5, #ff3b8d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(190, 56, 245, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .play-button:hover {
+            transform: scale(1.1);
+        }
+
         /* Стили для героя */
         #hero {
             position: relative;
@@ -208,22 +254,22 @@
             max-width: 1200px;
         }
         
-        /* WhatsApp виджет */
-        .whatsapp-widget {
+        /* Telegram виджет */
+        .telegram-widget {
             position: fixed;
             bottom: 30px;
             left: 30px;
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: #25D366;
+            background: #0088cc; /* Телеграм цвет */
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
             animation: pulse 2s infinite;
         }
         
@@ -263,6 +309,8 @@
         @media (max-width: 768px) {
             #hero::before {
                 background-attachment: scroll;
+                background-size: contain;
+                background-position: center top;
             }
             
             /* Оптимизация для высоких устройств */
@@ -279,11 +327,28 @@
                 height: 45px;
             }
             
-            .whatsapp-widget {
+            .telegram-widget {
                 bottom: 20px;
                 left: 20px;
                 width: 55px;
                 height: 55px;
+            }
+
+            /* Улучшение responsivity для изображений */
+            .img-container img {
+                object-fit: contain;
+            }
+
+            .play-button {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        @media (min-width: 769px) {
+            #hero::before {
+                background-size: cover;
+                background-position: center center;
             }
         }
 
@@ -300,6 +365,41 @@
 
         .low-performance section {
             transition: none;
+        }
+
+        /* Прелоадер стили */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #101010;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 4px solid transparent;
+            border-top-color: #be38f5;
+            border-right-color: #ff3b8d;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
     
@@ -322,12 +422,22 @@
     </script>
 </head>
 <body class="bg-[#101010] text-gray-200">
-    <!-- WhatsApp виджет -->
-    <a href="https://wa.me/your_phone_number" target="_blank" class="whatsapp-widget">
-        <svg xmlns="https://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="white">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.1-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.864 3.49"/>
-        </svg>
-    </a>
+    <!-- Прелоадер -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+<!-- Telegram виджет -->
+<a href="https://t.me/lilijall" target="_blank" class="telegram-widget">
+    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" viewBox="0 0 24 24">
+        <path d="M12 0C5.372 0 0 5.373 0 12c0 6.628 5.372 12 12 
+        12s12-5.372 12-12c0-6.627-5.372-12-12-12zm5.497 8.218l-1.88 
+        8.86c-.142.626-.514.779-1.04.484l-2.88-2.123-1.389 
+        1.338c-.154.154-.283.283-.579.283l.207-2.923 
+        5.329-4.812c.231-.207-.05-.322-.358-.115l-6.585 
+        4.144-2.839-.887c-.617-.192-.632-.617.128-.911l11.076-4.272c.514-.192.963.115.799.911z"/>
+    </svg>
+</a>
+
 
     <!-- Кнопка "Наверх" -->
     <div class="back-to-top" id="backToTop">
@@ -499,10 +609,10 @@
                 <h2 class="text-3xl md:text-5xl font-bold text-white">Атмосфера наших занятий</h2>
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Здесь слова не нужны. Просто почувствуй эту энергию.</p>
                 <div class="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/photo1.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 1" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/photo2.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 2" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/photo3.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 3" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/photo4.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 4" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/group1.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 1" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/group.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 2" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/group.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 3" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/group.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 4" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
                 </div>
             </div>
         </section>
@@ -514,20 +624,26 @@
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Почувствуй пластику и энергию каждого танца.</p>
                 <div class="mt-8 md:mt-16 grid md:grid-cols-2 gap-4 md:gap-8">
                     <!-- Видео 1 -->
-                    <div class="video-preview aspect-video bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer">
-                        <img src="/images/video1.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Обложка видео танца 1" loading="lazy" onerror="this.src='/images/fallback.jpg'">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                            <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-colors">
-                                <svg class="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
+                    <div class="video-preview aspect-video">
+                        <video class="w-full h-full object-cover" poster="/images/video-poster1.jpg" preload="metadata" muted loop playsinline>
+                            <source src="/videos/video1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-overlay">
+                            <div class="play-button">
+                                <svg class="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
                             </div>
                         </div>
                     </div>
                     <!-- Видео 2 -->
-                    <div class="video-preview aspect-video bg-gray-900 rounded-xl overflow-hidden relative group cursor-pointer">
-                        <img src="/images/video2.jpg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Обложка видео танца 2" loading="lazy" onerror="this.src='/images/fallback.jpg'">
-                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
-                            <div class="w-16 h-16 md:w-20 md:h-20 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-colors">
-                                <svg class="w-8 h-8 md:w-10 md:h-10 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
+                    <div class="video-preview aspect-video">
+                        <video class="w-full h-full object-cover" poster="/images/video-poster2.jpg" preload="metadata" muted loop playsinline>
+                            <source src="/videos/video2.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-overlay">
+                            <div class="play-button">
+                                <svg class="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
                             </div>
                         </div>
                     </div>
@@ -545,7 +661,7 @@
                     <div class="glass-card p-6 md:p-8 rounded-2xl">
                         <p class="text-gray-300 text-sm md:text-base">"Я пришла на занятия совершенно 'деревянной' и зажатой. Уже через месяц я почувствовала себя совершенно иначе! Алина — невероятный преподаватель, она заряжает и вдохновляет. Спасибо за новую меня!"</p>
                         <div class="mt-4 md:mt-6 flex items-center">
-                            <div class="img-container w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="/images/avatar1.jpg" alt="Аватар Анны К." class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'"></div>
+                            <div class="img-container w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src=/images/avatar1.jpg" alt="Аватар Анны К." class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'"></div>
                             <div class="ml-3 md:ml-4">
                                 <p class="font-bold text-white text-sm md:text-base">Анна К.</p>
                                 <p class="text-xs md:text-sm text-gray-500">Ученица</p>
@@ -579,7 +695,7 @@
         </section>
 
         <!-- СЕКЦИЯ 8: КОНТАКТЫ -->
-        <section id="contact" class="py-12 md:py-20 bg-cover bg-center" style="background-image: url('/images/contact.jpg');">
+        <section id="contact" class="py-12 md:py-20 bg-cover bg-center" style="background-image: url('images/contact.jpg');">
             <div class="container mx-auto px-4 md:px-6 text-center relative z-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white">Готова начать?</h2>
                 <p class="mt-2 md:mt-4 max-w-xl mx-auto text-gray-300 text-sm md:text-lg">
@@ -587,11 +703,11 @@
                 </p>
                 <div class="mt-8 md:mt-12 flex flex-wrap justify-center gap-4 md:gap-6">
                     <!-- Telegram -->
-                    <a href="https://t.me/your_telegram_username" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#0088cc] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
+                    <a href="https://t.me/lilijall" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#0088cc] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.58c-.28 1.13-1.04 1.4-1.74.88l-4.98-3.6-2.32 2.23c-.25.24-.47.45-.85.45z"/></svg>
                     </a>
                     <!-- Instagram -->
-                    <a href="https://instagram.com/your_instagram_username" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#E4405F] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
+                    <a href="https://www.instagram.com/lilijall/" target="_blank" class="w-16 h-16 md:w-20 md:h-20 bg-[#E4405F] rounded-full flex items-center justify-center text-white hover:bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] transition-all duration-300 transform hover:scale-110">
                         <svg class="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.012 3.584-.07 4.85c-.148 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.85s.012-3.584.07-4.85C2.165 3.854 3.704 2.31 6.958 2.163 8.223 2.105 8.603 2.093 12 2.093m0-2.093c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98 1.281.059 1.689.073 4.948.073s3.667-.014 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948s-.014-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
                     </a>
                     <!-- WhatsApp -->
@@ -611,7 +727,7 @@
         </div>
     </footer>
 
-    <!-- Скрипт для мобильного меню и оптимизации -->
+    <!-- Скрипт для мобильного меню, прелоадера и оптимизации -->
     <script>
         // Проверяем производительность устройства
         function checkPerformance() {
@@ -710,6 +826,41 @@
                     img.src = '/images/fallback.jpg';
                     img.classList.add('fallback-img');
                 }
+            });
+
+            // Обработка видео: автозапуск по клику на оверлей
+            document.querySelectorAll('.video-preview').forEach(preview => {
+                const video = preview.querySelector('video');
+                const overlay = preview.querySelector('.play-overlay');
+
+                overlay.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                        preview.classList.add('playing');
+                    } else {
+                        video.pause();
+                        preview.classList.remove('playing');
+                    }
+                });
+
+                video.addEventListener('play', () => {
+                    preview.classList.add('playing');
+                });
+
+                video.addEventListener('pause', () => {
+                    preview.classList.remove('playing');
+                });
+            });
+
+            // Скрываем прелоадер после загрузки страницы
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    const preloader = document.getElementById('preloader');
+                    preloader.classList.add('hidden');
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                    }, 500); // Время анимации fade out
+                }, 500); // Короткая задержка для красоты
             });
         });
     </script>
