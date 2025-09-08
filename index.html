@@ -31,15 +31,17 @@
     <!-- Иконка сайта -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💃</text></svg>">
     
-    <!-- Preload основных ресурсов -->
+    <!-- Preload основных ресурсов (без видео для ускорения) -->
     <link rel="preload" href="/images/hero.jpg" as="image">
     <link rel="preload" href="/images/about.jpg" as="image">
     <link rel="preload" href="/images/contact.jpg" as="image">
     <link rel="preload" href="/images/fallback.jpg" as="image">
-    <link rel="preload" href="/images/group.jpg" as="image">
     <link rel="preload" href="/images/group1.jpg" as="image">
-    <link rel="preload" href="/videos/video1.mp4" as="video">
-    <link rel="preload" href="/videos/video2.mp4" as="video">
+    <link rel="preload" href="/images/group2.jpg" as="image">
+    <link rel="preload" href="/images/group3.jpg" as="image">
+    <link rel="preload" href="/images/group4.jpg" as="image">
+    <link rel="preload" href="/images/video-poster1.jpg" as="image">
+    <link rel="preload" href="/images/video-poster2.jpg" as="image">
 
     <style>
         /* Базовые стили */
@@ -151,7 +153,7 @@
         
         /* Отключаем анимации для отсутствующих изображений */
         .img-container img:not([src]),
-        .img-container img[src=""], 
+        .img-container img[src=""],
         .img-container img[src="/images/fallback.jpg"] {
             transform: none !important;
             transition: none !important;
@@ -196,7 +198,7 @@
             pointer-events: none;
         }
 
-        .play-button {
+        .play-button, .pause-button {
             width: 60px;
             height: 60px;
             background: linear-gradient(135deg, #be38f5, #ff3b8d);
@@ -208,7 +210,7 @@
             transition: transform 0.2s ease;
         }
 
-        .play-button:hover {
+        .play-button:hover, .pause-button:hover {
             transform: scale(1.1);
         }
 
@@ -262,7 +264,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: #0088cc; /* Телеграм цвет */
+            background: #0088cc;
             color: white;
             display: flex;
             align-items: center;
@@ -339,7 +341,7 @@
                 object-fit: contain;
             }
 
-            .play-button {
+            .play-button, .pause-button {
                 width: 50px;
                 height: 50px;
             }
@@ -426,18 +428,13 @@
     <div id="preloader">
         <div class="loader"></div>
     </div>
-<!-- Telegram виджет -->
-<a href="https://t.me/lilijall" target="_blank" class="telegram-widget">
-    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" viewBox="0 0 24 24">
-        <path d="M12 0C5.372 0 0 5.373 0 12c0 6.628 5.372 12 12 
-        12s12-5.372 12-12c0-6.627-5.372-12-12-12zm5.497 8.218l-1.88 
-        8.86c-.142.626-.514.779-1.04.484l-2.88-2.123-1.389 
-        1.338c-.154.154-.283.283-.579.283l.207-2.923 
-        5.329-4.812c.231-.207-.05-.322-.358-.115l-6.585 
-        4.144-2.839-.887c-.617-.192-.632-.617.128-.911l11.076-4.272c.514-.192.963.115.799.911z"/>
-    </svg>
-</a>
 
+    <!-- Telegram виджет -->
+    <a href="https://t.me/lilijall" target="_blank" class="telegram-widget">
+        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" viewBox="0 0 24 24">
+            <path d="M12 0C5.372 0 0 5.373 0 12c0 6.628 5.372 12 12 12s12-5.372 12-12c0-6.627-5.372-12-12-12zm5.497 8.218l-1.88 8.86c-.142.626-.514.779-1.04.484l-2.88-2.123-1.389 1.338c-.154.154-.283.283-.579.283l.207-2.923 5.329-4.812c.231-.207-.05-.322-.358-.115l-6.585 4.144-2.839-.887c-.617-.192-.632-.617.128-.911l11.076-4.272c.514-.192.963.115.799.911z"/>
+        </svg>
+    </a>
 
     <!-- Кнопка "Наверх" -->
     <div class="back-to-top" id="backToTop">
@@ -543,7 +540,7 @@
                 <div class="mt-8 md:mt-16 grid md:grid-cols-3 gap-4 md:gap-8">
                     <!-- Карточка 1 -->
                     <div class="glass-card p-6 md:p-8 rounded-2xl text-left transform hover:-translate-y-2 transition-transform duration-300">
-                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be38f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
+                        <div class="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-[#be36f5] to-[#ff3b8d] rounded-xl flex items-center justify-center">
                            <svg xmlns="https://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v11.494m-5.247-8.991l10.494 4.498-10.494 4.498V3.255l10.494 4.498z"/></svg>
                         </div>
                         <h3 class="font-bold text-xl md:text-2xl text-white mt-4 md:mt-6">Техника и пластика</h3>
@@ -610,9 +607,9 @@
                 <p class="mt-2 md:mt-4 max-w-2xl mx-auto text-gray-400 text-sm md:text-base">Здесь слова не нужны. Просто почувствуй эту энергию.</p>
                 <div class="mt-8 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
                     <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/group1.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 1" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/group.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 2" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/group.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 3" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
-                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/group.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 4" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/group2.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 2" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden"><img src="/images/group3.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 3" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
+                    <div class="img-container h-40 md:h-64 rounded-xl overflow-hidden md:translate-y-8"><img src="/images/group4.jpg" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500" alt="Фото с занятия 4" loading="lazy" onerror="this.src='/images/fallback.jpg'"></div>
                 </div>
             </div>
         </section>
@@ -633,6 +630,9 @@
                             <div class="play-button">
                                 <svg class="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
                             </div>
+                            <div class="pause-button" style="display: none;">
+                                <svg class="w-6 h-6 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4h2v12H6zm6 0h2v12h-2z"/></svg>
+                            </div>
                         </div>
                     </div>
                     <!-- Видео 2 -->
@@ -644,6 +644,9 @@
                         <div class="play-overlay">
                             <div class="play-button">
                                 <svg class="w-6 h-6 md:w-8 md:h-8 text-white ml-1" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3.222v13.556l13.556-6.778L4 3.222z"/></svg>
+                            </div>
+                            <div class="pause-button" style="display: none;">
+                                <svg class="w-6 h-6 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4h2v12H6zm6 0h2v12h-2z"/></svg>
                             </div>
                         </div>
                     </div>
@@ -661,7 +664,7 @@
                     <div class="glass-card p-6 md:p-8 rounded-2xl">
                         <p class="text-gray-300 text-sm md:text-base">"Я пришла на занятия совершенно 'деревянной' и зажатой. Уже через месяц я почувствовала себя совершенно иначе! Алина — невероятный преподаватель, она заряжает и вдохновляет. Спасибо за новую меня!"</p>
                         <div class="mt-4 md:mt-6 flex items-center">
-                            <div class="img-container w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src=/images/avatar1.jpg" alt="Аватар Анны К." class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'"></div>
+                            <div class="img-container w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden bg-gray-800"><img src="/images/avatar1.jpg" alt="Аватар Анны К." class="w-full h-full object-cover" onerror="this.src='/images/fallback.jpg'"></div>
                             <div class="ml-3 md:ml-4">
                                 <p class="font-bold text-white text-sm md:text-base">Анна К.</p>
                                 <p class="text-xs md:text-sm text-gray-500">Ученица</p>
@@ -695,7 +698,7 @@
         </section>
 
         <!-- СЕКЦИЯ 8: КОНТАКТЫ -->
-        <section id="contact" class="py-12 md:py-20 bg-cover bg-center" style="background-image: url('images/contact.jpg');">
+        <section id="contact" class="py-12 md:py-20 bg-cover bg-center" style="background-image: url('/images/contact.jpg');">
             <div class="container mx-auto px-4 md:px-6 text-center relative z-10">
                 <h2 class="text-3xl md:text-5xl font-black text-white">Готова начать?</h2>
                 <p class="mt-2 md:mt-4 max-w-xl mx-auto text-gray-300 text-sm md:text-lg">
@@ -828,40 +831,48 @@
                 }
             });
 
-            // Обработка видео: автозапуск по клику на оверлей
+            // Обработка видео: автозапуск и пауза по клику на оверлей
             document.querySelectorAll('.video-preview').forEach(preview => {
                 const video = preview.querySelector('video');
                 const overlay = preview.querySelector('.play-overlay');
+                const playBtn = preview.querySelector('.play-button');
+                const pauseBtn = preview.querySelector('.pause-button');
 
                 overlay.addEventListener('click', () => {
                     if (video.paused) {
                         video.play();
                         preview.classList.add('playing');
+                        playBtn.style.display = 'none';
+                        pauseBtn.style.display = 'flex';
                     } else {
                         video.pause();
                         preview.classList.remove('playing');
+                        playBtn.style.display = 'flex';
+                        pauseBtn.style.display = 'none';
                     }
                 });
 
                 video.addEventListener('play', () => {
                     preview.classList.add('playing');
+                    playBtn.style.display = 'none';
+                    pauseBtn.style.display = 'flex';
                 });
 
                 video.addEventListener('pause', () => {
                     preview.classList.remove('playing');
+                    playBtn.style.display = 'flex';
+                    pauseBtn.style.display = 'none';
                 });
             });
 
-            // Скрываем прелоадер после загрузки страницы
-            window.addEventListener('load', () => {
+            // Скрываем прелоадер после загрузки DOM (для ускорения на мобильных)
+            setTimeout(() => {
+                const preloader = document.getElementById('preloader');
+                preloader.classList.add('hidden');
                 setTimeout(() => {
-                    const preloader = document.getElementById('preloader');
-                    preloader.classList.add('hidden');
-                    setTimeout(() => {
-                        preloader.style.display = 'none';
-                    }, 500); // Время анимации fade out
-                }, 500); // Короткая задержка для красоты
-            });
+                    preloader.style.display = 'none';
+                }, 500); // Время анимации fade out
+            }, 500); // Короткая задержка для красоты
         });
     </script>
 </body>
